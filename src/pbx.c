@@ -1,16 +1,38 @@
-/* X mem. */
+/*
+ * Name:        pbk.h
+ * Description: Portable big integer library eXternal memory support.
+ * Author:      cosh.cage#hotmail.com
+ * File ID:     0520240323F0520240555L00099
+ * License:     GPLv3.
+ */
+
 #include "pbx.h"
 #include <string.h>
 
-#define pbxMagic "Pb"
+#define pbxMagic "Pb" /* Magical number. */
 
-size_t _pbxGetPlatformSize(void);
+static _ub _pbxGetPlatformSize(void);
 
-size_t _pbxGetPlatformSize(void)
+/* Attention:     This Is An Internal Function. No Interface for Library Users.
+ * Function name: _pbxGetPlatformSize
+ * Description:   Return sizeof(_ub).
+ * Parameters:    N/A.
+ * Return value:  sizeof(_ub).
+ * Tip:           To inline this function is a better choice.
+ */
+static _ub _pbxGetPlatformSize(void)
 {
 	return sizeof(_ub);
 }
 
+/* Function name: pbxLoadBint
+ * Description:   Load a big integer from a file.
+ * Parameters:
+ *        pbi Pointer to a big integer.
+ *         fp Pointer to an opened file structure.
+ * Return value:  Please reference to enumeration PBXERR.
+ * Tip:           Big integer structure shall be initialized to 0.
+ */
 PBXERR pbxLoadBint(P_BINT pbi, FILE * fp)
 {
 	if (NULL != fp)
@@ -43,6 +65,13 @@ PBXERR pbxLoadBint(P_BINT pbi, FILE * fp)
 	return PE_BAD_FILE;
 }
 
+ /* Function name: pbxSaveBint
+  * Description:   Save a big integer to a file.
+  * Parameters:
+  *         fp Pointer to an opened file structure.
+  *        pbi Pointer to a big integer.
+  * Return value:  Please reference to enumeration PBXERR.
+  */
 PBXERR pbxSaveBint(FILE * fp, P_BINT pbi)
 {
 	if (NULL != fp)

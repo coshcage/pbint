@@ -1,6 +1,24 @@
-/* Math. */
+/*
+ * Name:        pbk.h
+ * Description: Portable big integer library mathematics module.
+ * Author:      cosh.cage#hotmail.com
+ * File ID:     0520240323D0520240605L00197
+ * License:     GPLv3.
+ */
+
 #include "pbm.h"
 
+/* Function name: pbmBintPower
+ * Description:   Calculates the power of a big integer.
+ * Parameters:
+ *          r Pointer to a big integer that is the result.
+ *          a Pointer to a big integer.
+ *          n Power of n.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ * Tip:           r := a ^ n; (r := power(a, n);)
+ *                This function uses fast exponent algorithm.
+ */
 _boolean pbmBintPower(P_BINT r, P_BINT a, _ub n)
 {
 	BINT A = { 0 }, T = { 0 }, R = { 0 };
@@ -47,6 +65,15 @@ Lbl_Failed:
 	return FALSE;
 }
 
+/* Function name: pbmUbFactorial
+ * Description:   Factorial of an integer.
+ * Parameters:
+ *          r Pointer to a big integer to store the result.
+ *          n fact(n).
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ * Tip:           Big value of n is slow to solve.
+ */
 _boolean pbmUbFactorial(P_BINT r, _ub n)
 {
 	BINT R = { 0 }, N = { 0 };
@@ -82,6 +109,14 @@ _boolean pbmUbFactorial(P_BINT r, _ub n)
 	return TRUE;
 }
 
+/* Function name: pbmBintSquareRoot
+ * Description:   Gets the square root of a big integer.
+ * Parameters:
+ *          r Pointer to a big integer to store result.
+ *          n sqrt(n).
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ */
 _boolean pbmBintSquareRoot(P_BINT r, P_BINT n)
 {
 	BINT * xk = r, XK1 = { 0 }, T = { 0 }, X = { 0 };
@@ -117,6 +152,17 @@ Lbl_Failure:
 	return FALSE;
 }
 
+/* Function name: pbmBintGreatestCommonDivisor
+ * Description:   Gets the greatest common divisor of two big integers.
+ * Parameters:
+ *          r Pointer to a big integer to store result.
+ *          a Pointer to a big integer.
+ *          b Pointer to a big integer.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ * Caution:       After invoking, the value of a and b are both CHANGED!
+ * Tip:           This function uses Euclidian algorithm.
+ */
 _boolean pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a, P_BINT b)
 {
 	BINT Q = { 0 };
@@ -126,7 +172,7 @@ _boolean pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a, P_BINT b)
 	{
 		pbkInitBint(&Q, 0);
 
-		while (!(1 == GETFLAG(b) && !*b->data))
+		while (!pbkIsBintEqualToZero(b))
 		{
 			if (!pbkDivideBint(&Q, r, a, b))
 				goto Lbl_Failed;
