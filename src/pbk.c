@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B0520240545L01539
+ * File ID:     0520240323B0520240545L01531
  * License:     GPLv3.
  */
 
@@ -854,11 +854,13 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 	{
 		if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +10 / +1. */
 		{
-			if ((1 == GETFLAG(b) && !*b->data)) /* 1 / 0 = NaN. */
+			if (pbkIsBintEqualToZero(b)) /* 1 / 0 = NaN. */
 				return FALSE;
 
-			if ((1 == GETFLAG(a) && !*a->data)) /* 0 / 1 = 0. */
+			if (pbkIsBintEqualToZero(a)) /* 0 / 1 = 0...1 */
 			{
+				SETFLAG(q, 1);
+				q->data[0] = 0;
 				if (NULL != r)
 					if (!pbkMoveBint(r, b))
 						return FALSE;
