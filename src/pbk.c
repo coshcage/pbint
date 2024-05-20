@@ -626,7 +626,7 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
 		if (blocks)
 		{
 			register _ib b = GETABS(GETFLAG(a)) - blocks;
-			memmove(a->data, a->data + blocks, (b >= 0 ? b : GETABS(GETFLAG(a))) * sizeof(_ub));
+			memmove(a->data, a->data + blocks, ((_ib)b >= 0 ? (_ub)b : GETABS(GETFLAG(a))) * sizeof(_ub));
 			b = b > 0 ? b : 1;
 			SETFLAG(a, (GETFLAG(a) >= 0 ? b : -b));
 		}
@@ -1287,26 +1287,17 @@ void pbkPrintBnum(P_BNUM pbn)
 		register _ub base = pbn->base;
 		if (GETFLAG(pbn) < 0)
 			putchar('-');
-		for (i = GETABS(GETFLAG(pbn)) - 1; i > 0; --i)
+		for (i = GETABS(GETFLAG(pbn)); i > 0; --i)
 		{
 			switch (base)
 			{
 			case 8:
 			case 10:
-				putchar('0' + pbn->data[i]);
+				putchar('0' + pbn->data[i - 1]);
 				break;
 			case 16:
-				printf("%x", pbn->data[i]);
+				printf("%x", pbn->data[i - 1]);
 			}
-		}
-		switch (base)
-		{
-		case 8:
-		case 10:
-			putchar('0' + pbn->data[i]);
-			break;
-		case 16:
-			printf("%x", pbn->data[i]);
 		}
 	}
 }
@@ -1338,11 +1329,11 @@ static _boolean _pbkAddAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 		SETFLAG(a, GETABS(GETFLAG(a)));
 		SETFLAG(b, GETABS(GETFLAG(b)));
 
-		for (i = 0, carry = 0; i < GETFLAG(a) || i < GETFLAG(b) || carry; ++i)
+		for (i = 0, carry = 0; i < (_ub)GETFLAG(a) || i < (_ub)GETFLAG(b) || carry; ++i)
 		{
-			carry += (i < GETFLAG(a) ? a->data[i] : 0) + (i < GETFLAG(b) ? b->data[i] : 0);
-			c->data[i] = carry % 10;
-			carry /= 10;
+			carry += (i < (_ub)GETFLAG(a) ? a->data[i] : 0) + (i < (_ub)GETFLAG(b) ? b->data[i] : 0);
+			c->data[i] = carry % base;
+			carry /= base;
 		}
 
 		SETFLAG(a, fa);
@@ -1383,7 +1374,6 @@ static _boolean _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 	{
 		register size_t i;
 		register char k;
-		register _ub base = c->base;
 
 		if (!pbkInitBnum(&B, GETBASE(b)))
 			return FALSE;
@@ -1394,7 +1384,7 @@ static _boolean _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 		c->data[0] = 0;
 		SETFLAG(c, 1);
 
-		for (i = 0, k = a->data[i]; i < GETFLAG(a); ++i, k = a->data[i])
+		for (i = 0, k = a->data[i]; i < (_ub)GETFLAG(a); ++i, k = a->data[i])
 		{
 			while (k--)
 				if (!_pbkAddAbstractBnum(c, c, &B)) /* ith digit is k, so we add k times. */

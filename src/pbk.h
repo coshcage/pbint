@@ -83,22 +83,22 @@ typedef struct _st_ubdiv_t
 
 #define pbkIsNotANumber(pbi) ((pbi)->flag == 0)
 
-#define pbkShrinkZeroFlag(pbi)                   \
-do                                               \
-{                                                \
-	register size_t i, j = GETABS(GETFLAG(pbi)); \
-	for (i = GETABS(GETFLAG(pbi)); i > 1; --i)   \
-	{                                            \
-		if (0 == (pbi)->data[i - 1])             \
-			--j;                                 \
-		else                                     \
-			break;                               \
-	}                                            \
-	if (GETFLAG(pbi) >= 0)                       \
-		SETFLAG(pbi,  (_ib)j);                   \
-	else                                         \
-		SETFLAG(pbi, -(_ib)j);                   \
-}                                                \
+#define pbkShrinkZeroFlag(pbi)                     \
+do                                                 \
+{                                                  \
+	register size_t _i, _j = GETABS(GETFLAG(pbi)); \
+	for (_i = GETABS(GETFLAG(pbi)); _i > 1; --_i)  \
+	{                                              \
+		if (0 == (pbi)->data[_i - 1])              \
+			--_j;                                  \
+		else                                       \
+			break;                                 \
+	}                                              \
+	if (GETFLAG(pbi) >= 0)                         \
+		SETFLAG(pbi,  (_ib)_j);                    \
+	else                                           \
+		SETFLAG(pbi, -(_ib)_j);                    \
+}                                                  \
 while (0);
 
 #define pbkIsBintEqualToZero(pbi) (1 == GETABS(GETFLAG(pbi)) && !(*(pbi)->data))
