@@ -606,7 +606,7 @@ _boolean pbkLeftShiftBint(P_BINT a, _ub blocks, _ub bits)
 /* Function name: pbkLeftShiftBint
  * Description:   Left shift a big integer.
  * Parameters:
- *          c Pointer to a big integer.
+ *          a Pointer to a big integer.
  *     blocks Blocks of integer you want to shift.
  *       bits Bits of integer you want ti shift.
  * Return value:  TRUE:  Succeeded.
