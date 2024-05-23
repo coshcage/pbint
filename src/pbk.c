@@ -358,7 +358,7 @@ _boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
 		if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +1 + +1. */
 		{
 			register size_t i, j = GETMIN(GETFLAG(a), GETFLAG(b)), k = GETMAX(GETFLAG(a), GETFLAG(b));
-			register _udb r = 0ULL;
+			register _udb r = 0;
 			P_BINT pir = GETFLAG(a) > GETFLAG(b) ? a : b;
 
 			if (pbkIsNotANumber(a) || pbkIsNotANumber(b))
