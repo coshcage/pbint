@@ -76,11 +76,11 @@ _boolean pbkInitBint(P_BINT pbi, _ib i)
  */
 _boolean pbkReallocBint(P_BINT pbi, _ub size, _boolean binc)
 {
-	if (!binc && GETSIZE(pbi) == size)
+	if (!binc && (GETSIZE(pbi) == size))
 	{
 		return TRUE;
 	}
-	else if (binc && GETSIZE(pbi) >= size)
+	else if (binc && (GETSIZE(pbi) >= size))
 	{
 		return TRUE;
 	}
@@ -1103,11 +1103,11 @@ _boolean pbkInitBnum(P_BNUM pbn, _ub base)
  */
 _boolean pbkReallocBnum(P_BNUM pbn, _ub size, _boolean binc)
 {
-	if (!binc && GETSIZE(pbn) == size)
+	if (!binc && (GETSIZE(pbn) == size))
 	{
 		return TRUE;
 	}
-	else if (binc && GETSIZE(pbn) >= size)
+	else if (binc && (GETSIZE(pbn) >= size))
 	{
 		return TRUE;
 	}
