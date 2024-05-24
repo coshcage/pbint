@@ -11,7 +11,7 @@
 
 P_BINT CatchFirstNumber();
 P_BINT CalcBrackets();
-P_BINT CalcAddtional();
+P_BINT CalcAdditional();
 P_BINT CalcAdvanced();
 P_BINT CalcPrimary();
 
@@ -54,7 +54,7 @@ P_BINT CalcAdvanced()
 	int c;
 	r = pbkCreateBint(0);
 	k = pbkCreateBint(0);
-	x = CalcAddtional(expr);
+	x = CalcAdditional(expr);
 	c = expr[0];
 	while ('*' == c || '/' == c)
 	{
@@ -79,7 +79,7 @@ P_BINT CalcAdvanced()
 	return x;
 }
 
-P_BINT CalcAddtional()
+P_BINT CalcAdditional()
 {
 	P_BINT x, y, r;
 	r = pbkCreateBint(0);
@@ -88,7 +88,7 @@ P_BINT CalcAddtional()
 	{
 		_ub n;
 		++expr;
-		y = CalcAddtional(expr);
+		y = CalcAdditional(expr);
 		n = GETABS(pbkBintToIb(y));
 		pbmBintPower(r, x, n);
 		pbkDeleteBint(y);
