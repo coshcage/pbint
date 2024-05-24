@@ -748,6 +748,12 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 			{
 				n = a->data[i];
 
+				if (!pbkLeftShiftBint(&B, (_ub)(m + 1), 0))
+				{
+					r = FALSE;
+					goto Lbl_Clear;
+				}
+
 				if (n)
 				{
 					if (1 & n)
@@ -795,12 +801,6 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 				else
 				{
 					++m;
-				}
-
-				if (!pbkLeftShiftBint(&B, (_ub)(m + 1), 0))
-				{
-					r = FALSE;
-					goto Lbl_Clear;
 				}
 			}
 		Lbl_Clear:
