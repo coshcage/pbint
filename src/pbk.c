@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B0520240545L01531
+ * File ID:     0520240323B0524241934L01525
  * License:     GPLv3.
  */
 
@@ -748,12 +748,6 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 			{
 				n = a->data[i];
 
-				if (!pbkLeftShiftBint(&B, (_ub)(m + 1), 0))
-				{
-					r = FALSE;
-					goto Lbl_Clear;
-				}
-
 				if (n)
 				{
 					if (1 & n)
@@ -774,7 +768,7 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 					{
 						if (((_ub)1 << j) & n)
 						{
-							if (!pbkLeftShiftBint(&B, 0, (_ub)(l + 1)))
+							if (!pbkLeftShiftBint(&B, (_ub)(m + 1), (_ub)(l + 1)))
 							{
 								r = FALSE;
 								goto Lbl_Clear;
