@@ -17,7 +17,7 @@
  * Return value:  TRUE:  Succeeded.
  *                FALSE: Failed.
  * Tip:           r := a ^ n; (r := power(a, n);)
- *                This function uses fast exponent algorithm.
+ *                This function uses quick power algorithm.
  */
 _boolean pbmBintPower(P_BINT r, P_BINT a, _ub n)
 {
