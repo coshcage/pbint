@@ -155,6 +155,7 @@ int main(int argc, char ** argv)
 		printf("= ");
 		pbkPrintBnum(t);
 		pbkDeleteBnum(t);
+		pbkDeleteBint(r);
 		printf("\n");
 	}
 }
