@@ -678,7 +678,7 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 		}
 		else /* GETFLAG(a) <= GETFLAG(b). */
 		{
-			register size_t i, j, k = GETFLAG(a), l, m;
+			register size_t i, j, k = GETFLAG(a), l = 0, m = 0;
 			register _ub n;
 			BINT B = { 0 }, C = { 0 };
 			_boolean r = TRUE;
@@ -716,7 +716,7 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 					}
 				}
 
-				for (j = 1, l = 0; j < UB_BIT; ++j)
+				for (j = 1; j < UB_BIT; ++j)
 				{
 					if (((_ub)1 << j) & n)
 					{
@@ -743,8 +743,14 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 					}
 				}
 			}
+			else
+			{
+				++m;
+			}
 
-			for (i = 1, m = 0; i < k; ++i)
+			++l;
+			
+			for (i = 1; i < k; ++i)
 			{
 				n = a->data[i];
 
@@ -764,11 +770,11 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 						}
 					}
 
-					for (j = 1, l = 0; j < UB_BIT; ++j)
+					for (j = 1; j < UB_BIT; ++j)
 					{
 						if (((_ub)1 << j) & n)
 						{
-							if (!pbkLeftShiftBint(&B, (_ub)(m + 1), (_ub)(l + 1)))
+							if (!pbkLeftShiftBint(&B, (_ub)m, (_ub)(l + 1)))
 							{
 								r = FALSE;
 								goto Lbl_Clear;
@@ -783,14 +789,14 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 								r = FALSE;
 								goto Lbl_Clear;
 							}
-							l = 0;
+							l = 1;
+							m = 0;
 						}
 						else
 						{
 							++l;
 						}
 					}
-					m = 0;
 				}
 				else
 				{
