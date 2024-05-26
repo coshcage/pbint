@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B0524241934L01525
+ * File ID:     0520240323B05260442L01465
  * License:     GPLv3.
  */
 
@@ -697,84 +697,18 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 				r = FALSE;
 				goto Lbl_Clear;
 			}
-
-			n = a->data[0];
-
-			if (n)
-			{
-				if (1 & n)
-				{
-					if (!pbkMoveBint(&C, c))
-					{
-						r = FALSE;
-						goto Lbl_Clear;
-					}
-					if (!pbkAddBint(c, &B, &C))
-					{
-						r = FALSE;
-						goto Lbl_Clear;
-					}
-				}
-
-				for (j = 1; j < UB_BIT; ++j)
-				{
-					if (((_ub)1 << j) & n)
-					{
-						if (!pbkLeftShiftBint(&B, 0, (_ub)(l + 1)))
-						{
-							r = FALSE;
-							goto Lbl_Clear;
-						}
-						if (!pbkMoveBint(&C, c))
-						{
-							r = FALSE;
-							goto Lbl_Clear;
-						}
-						if (!pbkAddBint(c, &B, &C))
-						{
-							r = FALSE;
-							goto Lbl_Clear;
-						}
-						l = 0;
-					}
-					else
-					{
-						++l;
-					}
-				}
-			}
-			else
-			{
-				++m;
-			}
-
-			++l;
 			
-			for (i = 1; i < k; ++i)
+			for (i = 0; i < k; ++i)
 			{
 				n = a->data[i];
 
 				if (n)
 				{
-					if (1 & n)
-					{
-						if (!pbkMoveBint(&C, c))
-						{
-							r = FALSE;
-							goto Lbl_Clear;
-						}
-						if (!pbkAddBint(c, &B, &C))
-						{
-							r = FALSE;
-							goto Lbl_Clear;
-						}
-					}
-
-					for (j = 1; j < UB_BIT; ++j)
+					for (j = 0; j < UB_BIT; ++j)
 					{
 						if (((_ub)1 << j) & n)
 						{
-							if (!pbkLeftShiftBint(&B, (_ub)m, (_ub)(l + 1)))
+							if (!pbkLeftShiftBint(&B, (_ub)m, (_ub)(j ? l : 0)))
 							{
 								r = FALSE;
 								goto Lbl_Clear;
