@@ -555,7 +555,7 @@ _boolean pbkSubtractBint(P_BINT c, P_BINT a, P_BINT b)
  * Parameters:
  *          c Pointer to a big integer.
  *     blocks Blocks of integer you want to shift.
- *       bits Bits of integer you want ti shift.
+ *       bits Bits of integer you want to shift.
  * Return value:  TRUE:  Succeeded.
  *                FALSE: Failed.
  */
@@ -603,12 +603,12 @@ _boolean pbkLeftShiftBint(P_BINT a, _ub blocks, _ub bits)
 	}
 }
 
-/* Function name: pbkLeftShiftBint
- * Description:   Left shift a big integer.
+/* Function name: pbkRightShiftBint
+ * Description:   Right shift a big integer.
  * Parameters:
  *          a Pointer to a big integer.
  *     blocks Blocks of integer you want to shift.
- *       bits Bits of integer you want ti shift.
+ *       bits Bits of integer you want to shift.
  * Return value:  TRUE:  Succeeded.
  *                FALSE: Failed.
  */
