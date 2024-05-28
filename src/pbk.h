@@ -27,10 +27,10 @@
 #define BNUM_INIT_INCL 4096U /* Initial big number incremental. */
 
 /* Predefined data type. */
-typedef int                _ib;      /* Integer block. */
-typedef unsigned int       _ub;      /* Unsigned integer block. */
-typedef long long          _idb;     /* Integer double block. */
-typedef unsigned long long _udb;     /* Unsigned integer double block. */
+typedef int                _ib;  /* Integer block. */
+typedef unsigned int       _ub;  /* Unsigned integer block. */
+typedef long long          _idb; /* Integer double block. */
+typedef unsigned long long _udb; /* Unsigned integer double block. */
 
 /* Boolean type does not need to change usually. */
 typedef unsigned int       _boolean; /* Boolean. */
