@@ -341,7 +341,7 @@ int pbkCompareBint(P_BINT a, P_BINT b)
 }
 
 /* Function name: pbkAddBint
- * Description:   Adds two big integers and store result to c.
+ * Description:   Adds two big integers and stores result to c.
  * Parameters:
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
@@ -430,7 +430,7 @@ _boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
 }
 
 /* Function name: pbkSubtractBint
- * Description:   Subtracts two big integers and store result to c.
+ * Description:   Subtracts two big integers and stores result to c.
  * Parameters:
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
@@ -658,7 +658,7 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
 }
 
 /* Function name: pbkMultiplyBint
- * Description:   Multiplies two big integers and store result to c.
+ * Description:   Multiplies two big integers and stores result to c.
  * Parameters:
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
@@ -770,7 +770,7 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 }
 
 /* Function name: pbkMultiplyBint
- * Description:   Divides two big integers and store result to c.
+ * Description:   Divides two big integers and stores result to c.
  * Parameters:
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
