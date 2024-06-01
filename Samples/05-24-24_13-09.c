@@ -142,3 +142,24 @@ P_BINT CatchFirstNumber()
 	pbkDeleteBnum(t);
 	return r;
 }
+
+int main(int argc, char ** argv)
+{
+	char szExpr[MAXLEN] = { 0 };
+	while (scanf("%s", szExpr))
+	{
+		P_BINT r;
+		P_BNUM t;
+		expr = szExpr;
+		t = pbkCreateBnum(10);
+		r = CalcPrimary();
+		pbkBintToDecimalBnum(t, r);
+		printf("= ");
+		pbkPrintBnum(t);
+		pbkDeleteBnum(t);
+		pbkDeleteBint(r);
+		printf("\n");
+	}
+	return 0;
+
+}
