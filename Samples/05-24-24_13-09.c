@@ -95,6 +95,7 @@ P_BINT CalcAdditional()
 		pbkDeleteBint(x);
 		return r;
 	}
+	pbkDeleteBint(r);
 	return x;
 }
 
@@ -143,19 +144,22 @@ P_BINT CatchFirstNumber()
 
 int main(int argc, char ** argv)
 {
-	char szExpr[MAXLEN] = { 0 };
-	while (EOF != scanf("%s", szExpr))
+	char szExpr[MAXLEN] = "(1048*2000+7)^(7*3)";
+	int i = 1000;
+	while (i--)
 	{
 		P_BINT r;
 		P_BNUM t;
 		expr = szExpr;
 		t = pbkCreateBnum(10);
 		r = CalcPrimary();
-		pbkBintToDecimalBnum(t, r);
-		printf("= ");
-		pbkPrintBnum(t);
+		//pbkBintToDecimalBnum(t, r);
+		//printf("= ");
+		//pbkPrintBnum(t);
 		pbkDeleteBnum(t);
 		pbkDeleteBint(r);
-		printf("\n");
+		//printf("\n");
 	}
+	return 0;
+
 }
