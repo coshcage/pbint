@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "pbm.h"
+
 #define MAXLEN 100
 
 P_BINT CatchFirstNumber();
@@ -140,26 +141,4 @@ P_BINT CatchFirstNumber()
 	pbkDecimalBnumToBint(r, t);
 	pbkDeleteBnum(t);
 	return r;
-}
-
-int main(int argc, char ** argv)
-{
-	char szExpr[MAXLEN] = "(1048*2000+7)^(7*3)";
-	int i = 1000;
-	while (i--)
-	{
-		P_BINT r;
-		P_BNUM t;
-		expr = szExpr;
-		t = pbkCreateBnum(10);
-		r = CalcPrimary();
-		//pbkBintToDecimalBnum(t, r);
-		//printf("= ");
-		//pbkPrintBnum(t);
-		pbkDeleteBnum(t);
-		pbkDeleteBint(r);
-		//printf("\n");
-	}
-	return 0;
-
 }
