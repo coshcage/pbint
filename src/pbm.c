@@ -2,7 +2,7 @@
  * Name:        pbk.h
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323D0520240605L00197
+ * File ID:     0520240323D0604240515L00260
  * License:     GPLv3.
  */
 
@@ -62,6 +62,69 @@ Lbl_Failed:
 	pbkFreeBint(&T);
 	pbkFreeBint(&R);
 
+	return FALSE;
+}
+
+/* Function name: pbmBintExponentialModule
+ * Description:   Calculates exp mod.
+ * Parameters:
+ *          r Pointer to a big integer that is the result.
+ *          a Pointer to a big integer.
+ *          n Power of n.
+ *          m Pointer to a big integer.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ * Tip:           r := a ^ n mod m.
+ *                This function uses quick power algorithm.
+ */
+_boolean pbmBintExponentialModule(P_BINT r, P_BINT a, _ub n, P_BINT m)
+{
+	BINT Q = { 0 }, R = { 0 }, T = { 0 };
+	if (pbkIsNotANumber(a) || pbkIsNotANumber(m))
+		return FALSE;
+	else
+	{
+		pbkInitBint(&Q, 0);
+		pbkInitBint(&R, 0);
+		pbkInitBint(&T, 0);
+
+		pbkDivideBint(&Q, &R, a, m);
+		pbkMoveBint(a, &R);
+
+		SETFLAG(r, 1);
+		r->data[0] = 1;
+
+		while (n)
+		{
+			if (n & 1)
+			{
+				if (!pbkMultiplyBint(&R, r, a))
+					goto Lbl_Failed;
+				if (!pbkDivideBint(&Q, &T, &R, m))
+					goto Lbl_Failed;
+				if (!pbkMoveBint(r, &T))
+					goto Lbl_Failed;
+			}
+
+			if (!pbkMultiplyBint(&T, a, a))
+				goto Lbl_Failed;
+			if (!pbkDivideBint(&Q, a, &T, m))
+				goto Lbl_Failed;
+
+			n >>= 1;
+		}
+
+		pbkFreeBint(&Q, 0);
+		pbkFreeBint(&R, 0);
+		pbkFreeBint(&T, 0);
+
+		return TRUE;
+	}
+Lbl_Failed:
+	pbkFreeBint(&Q, 0);
+	pbkFreeBint(&R, 0);
+	pbkFreeBint(&T, 0);
+	
 	return FALSE;
 }
 
