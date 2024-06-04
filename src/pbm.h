@@ -1,5 +1,5 @@
 /*
- * Name:        pbk.h
+ * Name:        pbm.h
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
  * File ID:     0520240323C0604240515L00022

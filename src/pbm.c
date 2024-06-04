@@ -1,5 +1,5 @@
 /*
- * Name:        pbk.h
+ * Name:        pbm.c
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
  * File ID:     0520240323D0604240515L00260
@@ -114,16 +114,16 @@ _boolean pbmBintExponentialModule(P_BINT r, P_BINT a, _ub n, P_BINT m)
 			n >>= 1;
 		}
 
-		pbkFreeBint(&Q, 0);
-		pbkFreeBint(&R, 0);
-		pbkFreeBint(&T, 0);
+		pbkFreeBint(&Q);
+		pbkFreeBint(&R);
+		pbkFreeBint(&T);
 
 		return TRUE;
 	}
 Lbl_Failed:
-	pbkFreeBint(&Q, 0);
-	pbkFreeBint(&R, 0);
-	pbkFreeBint(&T, 0);
+	pbkFreeBint(&Q);
+	pbkFreeBint(&R);
+	pbkFreeBint(&T);
 	
 	return FALSE;
 }

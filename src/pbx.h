@@ -1,5 +1,5 @@
 /*
- * Name:        pbk.h
+ * Name:        pbx.h
  * Description: Portable big integer library eXternal memory support module.
  * Author:      cosh.cage#hotmail.com
  * File ID:     0520240323E0520240324L00037
@@ -22,11 +22,11 @@ typedef struct st_XBINT
 
 typedef enum en_PBXERR /* File operation function result. */
 {
-	PE_NONE,        /* No error. */
-	PE_BAD_FILE,    /* Can not open file or file correpted. */
-	PE_BAD_FORMAT,  /* Is not a big integer memory dump file. */
-	PE_WRONG_PLATF, /* Conflicting platform. */
-	PE_ALLOCATION   /* Memory error. */
+	PXE_NONE,        /* No error. */
+	PXE_BAD_FILE,    /* Can not open file or file correpted. */
+	PXE_BAD_FORMAT,  /* Is not a big integer memory dump file. */
+	PXE_WRONG_PLATF, /* Conflicting platform. */
+	PXE_ALLOCATION   /* Memory error. */
 } PBXERR;
 
 /* Function declarations. */

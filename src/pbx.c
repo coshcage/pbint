@@ -1,5 +1,5 @@
 /*
- * Name:        pbk.h
+ * Name:        pbx.c
  * Description: Portable big integer library eXternal memory support.
  * Author:      cosh.cage#hotmail.com
  * File ID:     0520240323F0520240555L00099
@@ -52,17 +52,17 @@ PBXERR pbxLoadBint(P_BINT pbi, FILE * fp)
 					{
 						SETFLAG(pbi, xb.flag);
 						SETINCL(pbi, xb.incl);
-						return PE_NONE;
+						return PXE_NONE;
 					}
-					return PE_BAD_FILE;
+					return PXE_BAD_FILE;
 				}
-				return PE_ALLOCATION;
+				return PXE_ALLOCATION;
 			}
-			return PE_WRONG_PLATF;
+			return PXE_WRONG_PLATF;
 		}
-		return PE_BAD_FORMAT;
+		return PXE_BAD_FORMAT;
 	}
-	return PE_BAD_FILE;
+	return PXE_BAD_FILE;
 }
 
  /* Function name: pbxSaveBint
@@ -90,9 +90,9 @@ PBXERR pbxSaveBint(FILE * fp, P_BINT pbi)
 			for (i = 0; i < j; ++i)
 				fwrite(pbi->data + i, sizeof(_ub), 1, fp);
 
-			return PE_NONE;
+			return PXE_NONE;
 		}
-		return PE_ALLOCATION;
+		return PXE_ALLOCATION;
 	}
-	return PE_BAD_FILE;
+	return PXE_BAD_FILE;
 }
