@@ -2,7 +2,7 @@
  * Name:        pbm.c
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323D0604240515L00260
+ * File ID:     0520240323D0604240515L00261
  * License:     GPLv3.
  */
 
@@ -37,7 +37,8 @@ _boolean pbmBintPower(P_BINT r, P_BINT a, _ub n)
 		{
 			if (n & 1)
 			{
-				pbkMoveBint(&R, r);
+				if (!pbkMoveBint(&R, r))
+					goto Lbl_Failed;
 				if (!pbkMultiplyBint(r, &R, &A))
 					goto Lbl_Failed;
 			}
