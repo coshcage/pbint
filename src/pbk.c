@@ -156,7 +156,7 @@ void pbkDeleteBint(P_BINT pbi)
  * Return value:  TRUE:  Succeeded.
  *                FALSE: Failed.
  * Caution:       Parameter a and b shall not be NULL.
- * Tip:           After invoking, hte capacity of a will equal to b's. 
+ * Tip:           After invoking, the capacity of a will equal to b's. 
  */
 _boolean pbkMoveBint(P_BINT a, P_BINT b)
 {
@@ -1117,7 +1117,7 @@ void pbkDeleteBnum(P_BNUM pbn)
  * Return value:  TRUE:  Succeeded.
  *                FALSE: Failed.
  * Caution:       Parameter a and b shall not be NULL.
- * Tip:           After invoking, hte capacity of a will equal to b's.
+ * Tip:           After invoking, the capacity of a will equal to b's.
  */
 _boolean pbkMoveBnum(P_BNUM a, P_BNUM b)
 {
