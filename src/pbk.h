@@ -35,8 +35,8 @@ typedef unsigned long long _udb; /* Unsigned integer double block. */
 /* Boolean type does not need to change usually. */
 typedef unsigned int       _boolean; /* Boolean. */
 
-#define IBLOCK_FULL ((_ib)((~0U) >> 1))
-#define USIZE_FULL  (~0U)
+#define UBLOCK_FULL (~(_ub)0)
+#define IBLOCK_FULL ((_ib)((UBLOCK_FULL) >> 1))
 #define UB_BIT      (sizeof(_ub) * CHAR_BIT)
 #define CARRY(udb)  (((_udb)udb) >> UB_BIT)
 

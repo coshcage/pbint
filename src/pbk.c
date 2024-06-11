@@ -851,7 +851,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 					}
 
 					/* Start dichotomization. */
-					max = USIZE_FULL;
+					max = UBLOCK_FULL;
 					min = 0;
 					mid = (_ub)((((_udb)max + min) >> 1) + 1);
 					i = GETFLAG(a) - GETFLAG(b);
@@ -918,7 +918,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 								goto Lbl_Failure;
 							}
 							/* Reset dichotomization relative variables. */
-							max = USIZE_FULL;
+							max = UBLOCK_FULL;
 							min = 0x0;
 							mid = (_ub)((((_udb)max + min) >> 1) + 1);
 							/* One section is done! */
