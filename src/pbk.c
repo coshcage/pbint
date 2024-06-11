@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B0606240827L01465
+ * File ID:     0520240323B0611240922L01479
  * License:     GPLv3.
  */
 
@@ -770,15 +770,17 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 }
 
 /* Function name: pbkMultiplyBint
- * Description:   Divides two big integers and stores result to c.
+ * Description:   Divides two big integers and stores quotient to q and stores reminder to r.
  * Parameters:
- *          c Pointer to a big integer.
- *          a Pointer to a big integer.
- *          b Pointer to a big integer.
+ *          q Pointer to a big integer that is the quotient.
+ *          r Pointer to a big integer that is the reminder.
+ *          a Pointer to a big integer that is the numerator.
+ *          b Pointer to a big integer that is the denominator.
  * Return value:  TRUE:  Succeeded.
  *                FALSE: Failed.
  * Caution:       The address of c shall not equal to a or b.
  * Tip:           q := a / b; r := a mod b;
+ *                Parameter q or r can be NULL.
  */
 _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 {
@@ -793,8 +795,11 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 
 			if (pbkIsBintEqualToZero(a)) /* 0 / 1 = 0...1 */
 			{
-				SETFLAG(q, 1);
-				q->data[0] = 0;
+				if (NULL != q)
+				{
+					SETFLAG(q, 1);
+					q->data[0] = 0;
+				}
 				if (NULL != r)
 					if (!pbkMoveBint(r, b))
 						return FALSE;
@@ -806,13 +811,14 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 				if (NULL != r)
 					if (!pbkMoveBint(r, a))
 						return FALSE;
-				if (!pbkIbToBint(q, 0))
-					return FALSE;
+				if (NULL != q)
+					if (!pbkIbToBint(q, 0))
+						return FALSE;
 				return TRUE;
 			}
 			else
 			{
-				if (pbkReallocBint(r, GETSIZE(a), FALSE) && pbkReallocBint(q, GETSIZE(a), FALSE))
+				if ((NULL != r && pbkReallocBint(r, GETSIZE(a), FALSE)) || (NULL != q && pbkReallocBint(q, GETSIZE(a), FALSE)))
 				{
 					register _ub max, mid, min;
 					register ptrdiff_t i;
@@ -826,7 +832,8 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 					pbkInitBint(&T, 0);
 					pbkInitBint(&X, 0);
 					
-					SETFLAG(q, 0);
+					if (NULL != q)
+						SETFLAG(q, 0);
 					
 					/* Put GETFLAG(b) blocks from a to Q. */
 					memcpy(Q.data, a->data + GETFLAG(a) - GETFLAG(b), GETFLAG(b) * sizeof(_ub));
@@ -881,8 +888,9 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 						else if (pbkCompareBint(&T, b) <= 0)
 						{
 							/* Record the result as a part of answer. */
-							q->data[GETFLAG(q)++] = mid;
-							for ( ;; )
+							if (NULL != q)
+								q->data[GETFLAG(q)++] = mid;
+							for (;; )
 							{
 								if (--i < 0) /* Congratulations! */
 								{
@@ -897,7 +905,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 									rtn = TRUE;
 									goto Lbl_Solved;
 								}
-								
+
 								/* If reminder is not equal to zero, then left shit r for 1 section. */
 								if (!pbkLeftShiftBint(&T, 1, 0))
 								{
@@ -908,7 +916,10 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 								T.data[0] = a->data[i];
 
 								if (pbkCompareBint(&T, b) < 0)
-									q->data[GETFLAG(q)++] = 0;
+								{
+									if (NULL != q)
+										q->data[GETFLAG(q)++] = 0;
+								}
 								else
 									break;
 							}
@@ -940,14 +951,17 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 						}
 					}
 				Lbl_Solved:
-					/* Reverse quotient. */
-					k = GETFLAG(q) >> 1;
-					j = GETFLAG(q) & 1;
-					for (i = 0; i < (_ib)k; ++i)
+					if (NULL != q)
 					{
-						u = q->data[i];
-						q->data[i] = q->data[k + i + j];
-						q->data[k + i + j] = u;
+						/* Reverse quotient. */
+						k = GETFLAG(q) >> 1;
+						j = GETFLAG(q) & 1;
+						for (i = 0; i < (_ib)k; ++i)
+						{
+							u = q->data[i];
+							q->data[i] = q->data[k + i + j];
+							q->data[k + i + j] = u;
+						}
 					}
 				Lbl_Failure:
 					pbkFreeBint(&D);
