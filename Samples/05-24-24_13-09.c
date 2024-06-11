@@ -60,7 +60,7 @@ P_BINT CalcAdvanced()
 	while ('*' == c || '/' == c)
 	{
 		++expr;
-		y = CalcAdvanced(expr);
+		y = CalcAdditional(expr);
 		if ('*' == c)
 		{
 			pbkMultiplyBint(r, x, y);
