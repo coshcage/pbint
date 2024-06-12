@@ -2,11 +2,40 @@
  * Name:        pbm.c
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323D0611241311L00252
+ * File ID:     0520240323D0611242356L00467
  * License:     GPLv3.
  */
 
 #include "pbm.h"
+#include <stdlib.h>
+
+#define RAND_1_TIME(start, end) ((start) + rand() / (((_udb)RAND_MAX + 1) / (end)))
+
+#define PTSIZ 169
+unsigned short gPrimeTable1K[PTSIZ] =
+{
+	  0,   2,   3,   5,   7,  11,  13,  17,  19,  23,
+	 29,  31,  37,  41,  43,  47,  53,  59,  61,  67,
+	 71,  73,  79,  83,  89,  97, 101, 103, 107, 109,
+	113, 127, 131, 137, 139, 149, 151, 157, 163, 167,
+	173, 179, 181, 191, 193, 197, 199, 211, 223, 227,
+	229, 233, 239, 241, 251, 257, 263, 269, 271, 277,
+	281, 283, 293, 307, 311, 313, 317, 331, 337, 347,
+	349, 353, 359, 367, 373, 379, 383, 389, 397, 401,
+	409, 419, 421, 431, 433, 439, 443, 449, 457, 461,
+	463, 467, 479, 487, 491, 499, 503, 509, 521, 523,
+	541, 547, 557, 563, 569, 571, 577, 587, 593, 599,
+	601, 607, 613, 617, 619, 631, 641, 643, 647, 653,
+	659, 661, 673, 677, 683, 691, 701, 709, 719, 727,
+	733, 739, 743, 751, 757, 761, 769, 773, 787, 797,
+	809, 811, 821, 823, 827, 829, 839, 853, 857, 859,
+	863, 877, 881, 883, 887, 907, 911, 919, 929, 937,
+	941, 947, 953, 967, 971, 977, 983, 991, 997
+};
+
+/* File level function declaration. */
+_ub      _pbmRand1Block    (void);
+_boolean _pbkIsPrimePrimary(P_BINT n);
 
 /* Function name: pbmBintPower
  * Description:   Calculates the power of a big integer.
@@ -248,4 +277,190 @@ _boolean pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a, P_BINT b)
 	}
 Lbl_Failed:
 	return FALSE;
+}
+
+/* Attention:     This Is An Internal Function. No Interface for Library Users.
+ * Function name: _pbmRand1Block
+ * Description:   Generate 1 block random number.
+ * Parameters:    N/A.
+ * Return value:  Random number.
+ */
+_ub _pbmRand1Block(void)
+{
+	register _udb u = 1;
+	register _ub v = 1;
+	register size_t i, j = 0;
+	while (!(u >> UB_BIT))
+	{
+		u *= RAND_MAX;
+		++j;
+	}
+	for (i = 0; i < j; ++i)
+		v *= rand();
+	return v;
+}
+
+/* Function name: pbmRandomGenerator
+ * Description:   An RNG.
+ * Parameters:
+ *          r Pointer to a big integer to store result.
+ *     blocks Maximum number of blocks to be generate.
+ *     blarge FALSE Generate a smaller integer than blocks.
+ *            TRUE  Generate a larger integer than blocks - 1.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ */
+_boolean pbmRandomGenerator(P_BINT r, _ub blocks, _boolean blarge)
+{
+	size_t i = RAND_1_TIME(1, blocks), j;
+	if (!pbkReallocBint(r, (_ub)i, FALSE))
+		return FALSE;
+	for (j = 0; j < blarge ? i : i - 1; ++j)
+		r->data[j] = _pbmRand1Block();
+	pbkShrinkZeroFlag(r);
+	return TRUE;
+}
+
+/* Attention:     This Is An Internal Function. No Interface for Library Users.
+ * Function name: _pbkIsPrimePrimary
+ * Description:   Test prime number.
+ * Parameter:
+ *         n Pointer to a big integer to be tested.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ */
+_boolean _pbkIsPrimePrimary(P_BINT n)
+{
+	size_t i;
+	_boolean r = TRUE;
+
+	BINT P = { 0 }, R = { 0 };
+
+	pbkInitBint(&P, 0);
+
+	for (i = 1; i < PTSIZ; ++i)
+	{
+		P.data[0] = gPrimeTable1K[i];
+		pbkDivideBint(NULL, &R, n, &P);
+		if (pbkIsBintEqualToZero(&R))
+		{
+			r = FALSE;
+			goto Lbl_Finish;
+		}
+	}
+
+Lbl_Finish:
+	pbkFreeBint(&P);
+	return r;
+}
+
+/* Function name: pbmMillerRabinTest
+ * Description:   Miller Rabin primality test.
+ * Parameters:
+ *          r Pointer to a big integer to be tested.
+ *          k K times of evaluation. K should be greater than 8.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ */
+_boolean pbmMillerRabinTest(P_BINT n, _ub k)
+{
+	BINT A = { 0 }, X = { 0 }, N_1 = { 0 }, U = { 0 }, V = { 0 };
+	_boolean r = TRUE;
+	_udb t = 0, s;
+	size_t i;
+	if ((pbkBintToIb(n) < 3) || 0 == (pbkBintToIb(n) & 1))
+	{
+		if (2 == pbkBintToIb(n) && 1 == GETFLAG(n))
+			return TRUE;
+		else
+			return FALSE;
+	}
+	else
+	{
+		if (FALSE == _pbkIsPrimePrimary(n))
+			return FALSE;
+
+		pbkInitBint(&A, 0);
+		pbkInitBint(&X, 1);
+		pbkInitBint(&N_1, 0);
+		pbkInitBint(&V, 0);
+
+		if (!pbkSubtractBint(&N_1, n, &X))
+		{
+			r = FALSE;
+			goto Lbl_Finish;
+		}
+
+		if (!pbkMoveBint(&U, &N_1))
+		{
+			r = FALSE;
+			goto Lbl_Finish;
+		}
+
+		while (0 == (U.data[0] & 1))
+		{
+			pbkRightShiftBint(&U, 0, 1);
+			++t;
+		}
+
+		for (i = 0; i < k; ++i)
+		{
+			if (GETFLAG(n) > 1)
+			{
+				if (!pbmRandomGenerator(&A, GETABS(GETFLAG(n)) - 1, TRUE))
+				{
+					r = FALSE;
+					goto Lbl_Finish;
+				}
+			}
+			else
+			{
+				if (!pbmRandomGenerator(&A, 1, FALSE))
+				{
+					r = FALSE;
+					goto Lbl_Finish;
+				}
+			}
+
+			if (!pbmBintExponentialModule(&V, &A, U.data[0], n))
+			{
+				r = FALSE;
+				goto Lbl_Finish;
+			}
+
+			if (1 == GETFLAG(&V) && 1 == V.data[0])
+				continue;
+
+			for (s = 0; s < t; ++s)
+			{
+				if (0 == pbkCompareBint(&V, &N_1))
+					break;
+
+				if (!pbmBintExponentialModule(&X, &V, 2, n))
+				{
+					r = FALSE;
+					goto Lbl_Finish;
+				}
+
+				if (!pbkMoveBint(&V, &X))
+				{
+					r = FALSE;
+					goto Lbl_Finish;
+				}
+			}
+			if (s == t)
+			{
+				r = FALSE;
+				goto Lbl_Finish;
+			}
+		}
+		r = TRUE;
+	}
+Lbl_Finish:
+	pbkFreeBint(&A);
+	pbkFreeBint(&X);
+	pbkFreeBint(&N_1);
+	pbkFreeBint(&U);
+	pbkFreeBint(&V);
+	return r;
 }
