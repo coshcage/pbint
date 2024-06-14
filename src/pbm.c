@@ -359,8 +359,8 @@ Lbl_Finish:
  * Parameters:
  *          r Pointer to a big integer to be tested.
  *          k K times of evaluation. K should be greater than 8.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  TRUE:  n is a pseudo prime.
+ *                FALSE: n is NOT a prime.
  */
 _boolean pbmMillerRabinTest(P_BINT n, _ub k)
 {
