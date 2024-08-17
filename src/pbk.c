@@ -769,7 +769,7 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 	}
 }
 
-/* Function name: pbkMultiplyBint
+/* Function name: pbkDivideBint
  * Description:   Divides two big integers and stores quotient to q and stores reminder to r.
  * Parameters:
  *          q Pointer to a big integer that is the quotient.
