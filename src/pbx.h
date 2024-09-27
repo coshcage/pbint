@@ -23,7 +23,7 @@ typedef struct st_XBINT
 typedef enum en_PBXERR /* File operation function result. */
 {
 	PXE_NONE,        /* No error. */
-	PXE_BAD_FILE,    /* Can not open file or file correpted. */
+	PXE_BAD_FILE,    /* Can not open file or file corrupted. */
 	PXE_BAD_FORMAT,  /* Is not a big integer memory dump file. */
 	PXE_WRONG_PLATF, /* Conflicting platform. */
 	PXE_ALLOCATION   /* Memory error. */
