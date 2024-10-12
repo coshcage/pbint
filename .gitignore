@@ -1,0 +1,8 @@
+# ignore IDE file
+.idea/
+.vscode/
+# ignore OS file
+Thumbs.db
+.DS_Store
+# ignore log file
+*.log
