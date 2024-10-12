@@ -1,6 +1,6 @@
 /*
  * Name:        pbx.h
- * Description: Portable big integer library eXternal memory support module.
+ * Description: Portable big integer library external memory support module.
  * Author:      cosh.cage#hotmail.com
  * File ID:     0520240323E0520240324L00037
  * License:     GPLv3.
