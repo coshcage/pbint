@@ -10,8 +10,7 @@
 In this project, you can build a protable big interger calculator and use
 the test file to test the correctness.Also, the files are divided into 3 parts:
 kernel module, math module and external memory support module.
-Each module has its unique features,(To add the descriptions of the three modules)
-(To add the calculator's functions)
+Each module has its unique features.
 
 ***********
 2. Files
