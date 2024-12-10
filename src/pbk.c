@@ -885,7 +885,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 							max = mid;
 							mid = (_ub)(((_udb)max + min) >> 1);
 						}
-						else if (pbkCompareBint(&T, b) <= 0)
+						else if (pbkCompareBint(&T, b) < 0)
 						{
 							/* Record the result as a part of answer. */
 							if (NULL != q)
@@ -1127,7 +1127,7 @@ void pbkDeleteBnum(P_BNUM pbn)
  * Description:   Move the memory of a big number to another big number.
  * Parameters:
  *         a Pointer to a big number.
- *         a Pointer to another big number.
+ *         b Pointer to another big number.
  * Return value:  TRUE:  Succeeded.
  *                FALSE: Failed.
  * Caution:       Parameter a and b shall not be NULL.
