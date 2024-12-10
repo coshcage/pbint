@@ -69,7 +69,7 @@ P_BINT CalcAdvanced()
 		else if (c == '/')
 		{
 			pbkDivideBint(r, k, x, y);
-			pbkMoveBint(x, r);
+			pbkMoveBint(x, k);
 		}
 		c = expr[0];
 	}
