@@ -23,12 +23,12 @@ P_BINT CalcPrimary()
 	P_BINT x, y = NULL, r;
 	int c;
 	r = pbkCreateBint(0);
-	x = CalcAdvanced(expr);
+	x = CalcAdvanced();
 	c = expr[0];
 	while ('+' == c || '-' == c)
 	{
 		++expr;
-		y = CalcAdvanced(expr);
+		y = CalcAdvanced();
 		if ('+' == c)
 		{
 			pbkAddBint(r, x, y);
@@ -55,12 +55,12 @@ P_BINT CalcAdvanced()
 	int c;
 	r = pbkCreateBint(0);
 	k = pbkCreateBint(0);
-	x = CalcAdditional(expr);
+	x = CalcAdditional();
 	c = expr[0];
 	while ('*' == c || '/' == c)
 	{
 		++expr;
-		y = CalcAdditional(expr);
+		y = CalcAdditional();
 		if ('*' == c)
 		{
 			pbkMultiplyBint(r, x, y);
@@ -84,12 +84,12 @@ P_BINT CalcAdditional()
 {
 	P_BINT x, y, r;
 	r = pbkCreateBint(0);
-	x = CalcBrackets(expr);
+	x = CalcBrackets();
 	if ('^' == expr[0])
 	{
 		_ub n;
 		++expr;
-		y = CalcAdditional(expr);
+		y = CalcAdditional();
 		n = GETABS(pbkBintToIb(y));
 		pbmBintPower(r, x, n);
 		pbkDeleteBint(y);
@@ -105,11 +105,11 @@ P_BINT CalcBrackets()
 	if ('(' == expr[0])
 	{
 		++expr;
-		return CalcPrimary(expr);
+		return CalcPrimary();
 	}
 	else
 	{
-		return CatchFirstNumber(expr);
+		return CatchFirstNumber();
 	}
 }
 
