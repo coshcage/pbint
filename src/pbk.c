@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B0611240922L01479
+ * File ID:     0520240323B0423250443L01480
  * License:     GPLv3.
  */
 
@@ -841,7 +841,8 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 
 					if (pbkCompareBint(b, &Q) > 0) /* b is bigger, enlarge Q. */
 					{
-						memcpy(Q.data + GETFLAG(&Q), a->data + GETFLAG(a) - GETFLAG(b) - 1, sizeof(_ub));
+						pbkLeftShiftBint(&Q, 1, 0);
+						memcpy(Q.data, a->data + GETFLAG(a) - GETFLAG(b) - 1, sizeof(_ub));
 						SETFLAG(&Q, GETFLAG(b) + 1);
 					}
 
@@ -861,7 +862,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 					max = UBLOCK_FULL;
 					min = 0;
 					mid = (_ub)((((_udb)max + min) >> 1) + 1);
-					i = GETFLAG(a) - GETFLAG(b);
+					i = GETFLAG(a) - GETFLAG(&Q);
 
 					for ( ;; )
 					{
@@ -890,7 +891,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 							/* Record the result as a part of answer. */
 							if (NULL != q)
 								q->data[GETFLAG(q)++] = mid;
-							for (;; )
+							for ( ;; )
 							{
 								if (--i < 0) /* Congratulations! */
 								{
@@ -937,7 +938,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 						else
 						{
 							min = mid;
-							mid = (_ub)(((_udb)max + min) >> 1);
+							mid = (_ub)((((_udb)max + min - 1) >> 1));
 						}
 						if (!pbkMoveBint(&D, b))
 						{
@@ -1476,3 +1477,4 @@ Lbl_Failed:
 	GETFLAG(x) *= GETSGN(GETFLAG(a));
 	return FALSE;
 }
+
