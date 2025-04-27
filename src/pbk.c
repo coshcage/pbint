@@ -938,7 +938,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 						else
 						{
 							min = mid;
-							mid = (_ub)((((_udb)max + min - 1) >> 1));
+							mid = (_ub)((((_udb)max + min + 1) >> 1));
 						}
 						if (!pbkMoveBint(&D, b))
 						{
