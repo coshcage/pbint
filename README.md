@@ -2,7 +2,8 @@
 
 ## Author
 
-cosh.cage#hotmail.com
+John Cage  cosh.cage#hotmail.com
+Wick Dynex @github.com/wickdynex
 
 ## License
 
@@ -16,10 +17,10 @@ Portable big integer library(aka: pbint) is intended to provide a set of functio
 
 |Name           |Type  |File  |Line number |Operation|
 |---------------|------|------|------------|---------|
-|BINT_INIT_SIZE |Macro |pbk.h |23          |Alter to suitable value.                        |
-|BINT_INIT_INCL |Macro |pbk.h |24          |Alter to suitable value.                        |
-|BNUM_INIT_SIZE |Macro |pbk.h |26          |Alter to suitable value.                        |
-|BNUM_INIT_INCL |Macro |pbk.h |27          |Alter to suitable value.                        |
+|BINT_INIT_SIZE |Macro |pbk.h |23          |Alter to a suitable value.                      |
+|BINT_INIT_INCL |Macro |pbk.h |24          |Alter to a suitable value.                      |
+|BNUM_INIT_SIZE |Macro |pbk.h |26          |Alter to a suitable value.                      |
+|BNUM_INIT_INCL |Macro |pbk.h |27          |Alter to a suitable value.                      |
 |_ib            |Type  |pbk.h |30          |Alter to signed platform integer.               |
 |_ub            |Type  |pbk.h |31          |Alter to unsigned platform integer.             |
 |_idb           |Type  |pbk.h |32          |Alter to signed double sized platform integer.  |
@@ -28,3 +29,4 @@ Portable big integer library(aka: pbint) is intended to provide a set of functio
 ## Compilation guide
 
 Type cc *.c in command line.
+
