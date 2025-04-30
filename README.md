@@ -2,7 +2,7 @@
 
 ## Author
 
-John Cage  cosh.cage#hotmail.com
+John Cage  cosh.cage#hotmail.com;
 Wick Dynex @github.com/wickdynex
 
 ## License
