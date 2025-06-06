@@ -225,7 +225,7 @@ _ib pbkBintToIb(P_BINT a)
  * Description:   Compare two big integers.
  * Parameters:
  *          a Pointer to a big integer.
- *          a Pointer to another big integer.
+ *          b Pointer to another big integer.
  * Return value:  0:  a == b. Or can not compare.
  *                1:  a > b.
  *                -1: a < b.
