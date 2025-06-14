@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B0423250443L01480
+ * File ID:     0520240323B0423250443L01484
  * License:     GPLv3.
  */
 
@@ -110,7 +110,9 @@ _boolean pbkReallocBint(P_BINT pbi, _ub size, _boolean binc)
  */
 void pbkFreeBint(P_BINT pbi)
 {
-	free(pbi->data);
+	if (pbi->data)
+		free(pbi->data);
+	pbi->data = NULL;
 	SETFLAG(pbi, 0);
 	SETSIZE(pbi, 0U);
 }
@@ -1086,7 +1088,9 @@ _boolean pbkReallocBnum(P_BNUM pbn, _ub size, _boolean binc)
  */
 void pbkFreeBnum(P_BNUM pbn)
 {
-	free(pbn->data);
+	if (pbn->data)
+		free(pbn->data);
+	pbn->data = NULL;
 	SETFLAG(pbn, 0);
 	SETSIZE(pbn, 0U);
 }
