@@ -2,7 +2,7 @@
  * Name:        pbm.c
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323D0614250912L00510
+ * File ID:     0520240323D0614250912L00511
  * License:     GPLv3.
  */
 
@@ -319,6 +319,7 @@ _boolean pbmBintLeastCommonMultiple(P_BINT r, P_BINT a, P_BINT b)
 	}
 Lbl_Failed:
 	pbkFreeBint(&T);
+	pbkFreeBint(&U);
 	return FALSE;
 }
 
