@@ -2,7 +2,7 @@
  * Name:        pbk.h
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323A0520240324L00135
+ * File ID:     0520240323A0520240324L00137
  * License:     GPLv3.
  */
 
@@ -134,3 +134,4 @@ _boolean pbkBintToDecimalBnum(P_BNUM x,   P_BINT a);
 _boolean pbkDecimalBnumToBint(P_BINT x,   P_BNUM a);
 
 #endif
+

@@ -2,7 +2,7 @@
  * Name:        pbm.c
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323D0611242356L00467
+ * File ID:     0520240323D0614250912L00510
  * License:     GPLv3.
  */
 
@@ -279,6 +279,49 @@ Lbl_Failed:
 	return FALSE;
 }
 
+/* Function name: pbmBintLeastCommonMultiple
+ * Description:   Gets the least common multiple of two big integers.
+ * Parameters:
+ *          r Pointer to a big integer to store result.
+ *          a Pointer to a big integer.
+ *          b Pointer to a big integer.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ */
+_boolean pbmBintLeastCommonMultiple(P_BINT r, P_BINT a, P_BINT b)
+{
+	BINT T = {0}, U = {0};
+	
+	if (pbkIsNotANumber(a) || pbkIsNotANumber(b) || pbkIsNotANumber(r))
+		return FALSE;
+	else
+	{
+		pbkInitBint(&T, 0);
+		pbkInitBint(&U, 0);
+		
+		if (!pbkMultiplyBint(&U, a, b))
+			goto Lbl_Failed;
+		
+		if (!pbmBintGreatestCommonDivisor(&T, a, b))
+			goto Lbl_Failed;
+		
+		if (!pbkIsBintEqualToZero(&T))
+		{
+			if (!pbkDivideBint(r, NULL, &U, &T))
+				goto Lbl_Failed;
+		}
+		else
+			goto Lbl_Failed;
+		
+		pbkFreeBint(&T);
+		pbkFreeBint(&U);
+		return TRUE;
+	}
+Lbl_Failed:
+	pbkFreeBint(&T);
+	return FALSE;
+}
+
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
  * Function name: _pbmRand1Block
  * Description:   Generate 1 block random number.
@@ -464,3 +507,4 @@ Lbl_Finish:
 	pbkFreeBint(&V);
 	return r;
 }
+

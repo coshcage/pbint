@@ -17,7 +17,9 @@ _boolean pbmBintExponentialModule    (P_BINT r, P_BINT a,      _ub      n,     P
 _boolean pbmUbFactorial              (P_BINT r, _ub    n);
 _boolean pbmBintSquareRoot           (P_BINT r, P_BINT n);
 _boolean pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a,      P_BINT   b);
+_boolean pbmBintLeastCommonMultiple  (P_BINT r, P_BINT a,      P_BINT   b);
 _boolean pbmRandomGenerator          (P_BINT r, _ub    blocks, _boolean blarge);
 _boolean pbmMillerRabinTest          (P_BINT n, _ub    k);
 
 #endif
+
