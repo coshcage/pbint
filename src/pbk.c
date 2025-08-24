@@ -775,7 +775,7 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
  * Description:   Divides two big integers and stores quotient to q and stores reminder to r.
  * Parameters:
  *          q Pointer to a big integer that is the quotient.
- *          r Pointer to a big integer that is the reminder.
+ *          r Pointer to a big integer that is the reminder. This value can be NULL.
  *          a Pointer to a big integer that is the numerator.
  *          b Pointer to a big integer that is the denominator.
  * Return value:  TRUE:  Succeeded.
