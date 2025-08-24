@@ -8,7 +8,7 @@
 #include <string.h>
 #include "pbm.h"
 
-#define MAXLEN 100
+#define MAXLEN 8192
 
 P_BINT CatchFirstNumber();
 P_BINT CalcBrackets();
@@ -57,7 +57,7 @@ P_BINT CalcAdvanced()
 	k = pbkCreateBint(0);
 	x = CalcAdditional();
 	c = expr[0];
-	while ('*' == c || '/' == c)
+	while ('*' == c || '/' == c || '%' == c)
 	{
 		++expr;
 		y = CalcAdditional();
@@ -66,10 +66,15 @@ P_BINT CalcAdvanced()
 			pbkMultiplyBint(r, x, y);
 			pbkMoveBint(x, r);
 		}
-		else if (c == '/')
+		else if ('/' == c)
 		{
 			pbkDivideBint(r, k, x, y);
 			pbkMoveBint(x, r);
+		}
+		else if ('%' == c)
+		{
+			pbkDivideBint(r, k, x, y);
+			pbkMoveBint(x, k);
 		}
 		c = expr[0];
 	}
@@ -161,6 +166,5 @@ int main(int argc, char ** argv)
 		printf("\n");
 	}
 	return 0;
-
 }
 
