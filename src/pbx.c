@@ -45,16 +45,14 @@ PBXERR pbxLoadBint(P_BINT pbi, FILE * fp)
 			{
 				if (pbkReallocBint(pbi, (_ub)GETABS(xb.flag), TRUE))
 				{
-					register size_t i = 0;
-					while (!feof(fp))
-						fread(&pbi->data[i++], sizeof(_ub), 1, fp);
-					if (i == GETABS(xb.flag))
-					{
-						SETFLAG(pbi, xb.flag);
-						SETINCL(pbi, xb.incl);
-						return PXE_NONE;
-					}
-					return PXE_BAD_FILE;
+					register size_t i = GETABS(GETFLAG(&xb)), j;
+
+					for (j = 0; j < i; ++j)
+						fread(&pbi->data[j], sizeof(_ub), 1, fp);
+					
+					SETFLAG(pbi, xb.flag);
+					SETINCL(pbi, xb.incl);
+					return PXE_NONE;
 				}
 				return PXE_ALLOCATION;
 			}
@@ -65,13 +63,13 @@ PBXERR pbxLoadBint(P_BINT pbi, FILE * fp)
 	return PXE_BAD_FILE;
 }
 
- /* Function name: pbxSaveBint
-  * Description:   Save a big integer to a file.
-  * Parameters:
-  *         fp Pointer to an opened file structure.
-  *        pbi Pointer to a big integer.
-  * Return value:  Please reference to enumeration PBXERR.
-  */
+/* Function name: pbxSaveBint
+ * Description:   Save a big integer to a file.
+ * Parameters:
+ *         fp Pointer to an opened file structure.
+ *        pbi Pointer to a big integer.
+ * Return value:  Please reference to enumeration PBXERR.
+ */
 PBXERR pbxSaveBint(FILE * fp, P_BINT pbi)
 {
 	if (NULL != fp)
@@ -79,7 +77,7 @@ PBXERR pbxSaveBint(FILE * fp, P_BINT pbi)
 		if (NULL != pbi)
 		{
 			register size_t i, j;
-			XBINT xb;
+			XBINT xb = { 0 };
 			memcpy(xb.magic, pbxMagic, sizeof(xb.magic));
 			xb.flag = GETFLAG(pbi);
 			xb.incl = GETINCL(pbi);

@@ -204,7 +204,7 @@ _boolean pbkIbToBint(P_BINT a, _ib i)
 	if (pbkIsNotANumber(a))
 		return FALSE;
 	a->data[0] = GETABS(i);
-	SETFLAG(a, GETSGN(i));
+	SETFLAG(a, 0 == GETSGN(i) ? 1 : GETSGN(i));
 	return TRUE;
 }
 
@@ -400,7 +400,18 @@ _boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
 		}
 		else if (GETFLAG(a) < 0 && GETFLAG(b) > 0) /* -1 + +1. */
 		{
-			return pbkSubtractBint(c, b, a);
+			register int r;
+			register _ib fa;
+
+			fa = GETFLAG(a);
+
+			SETFLAG(a, -GETFLAG(a));
+
+			r = pbkSubtractBint(c, b, a);
+
+			SETFLAG(a, fa);
+
+			return r;
 		}
 		else if (GETFLAG(a) > 0 && GETFLAG(b) < 0) /* +1 + -1. */
 		{
@@ -996,7 +1007,12 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 			if (rtn)
 			{
 				if (GETFLAG(a) > 0 || GETFLAG(b) > 0)
-					SETFLAG(q, -GETFLAG(q));
+				{
+					if (NULL != q)
+						SETFLAG(q, -GETFLAG(q));
+					if (NULL != r)
+						SETFLAG(r, -GETFLAG(r));
+				}
 			}
 
 			return rtn;

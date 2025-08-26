@@ -16,14 +16,18 @@ Each module has its unique features.
 2. Files
 ***********
 
-Makefile                Builds the entire project
-README.txt              This file
-pbk.h                   Kernel Module's related data structures and macros
-pbk.c                   Kernel Function implements
-pbm.h                   Mathematical Module's function signature
-pbm.c                   Mathematical Function implements
-pbx.h                   External Memory Support Module's data structure and function signature definition
-pbx.c                   External Memory Support Module's function implements
+Makefile                Builds the entire project.
+README.txt              This file.
+pbk.h                   Kernel Module's related data structures and macros.
+pbk.c                   Kernel Function implements.
+pbm.h                   Mathematical Module's function declarations.
+pbm.c                   Mathematical Function implements.
+pbx.h                   External Memory Support Module's data structures and function definitions.
+pbx.c                   External Memory Support Module's function implements.
+pbi4rsa.h               Portable big integer library for RSA interface.
+pbi4rsa.c               Portable big integer library for RSA module.
+pbi4rsax.h              Portable big integer library for RSA interface.
+pbi4rsax.c              Portable big integer library for RSA eXternal memory support.
 
 *************************
 3. Building the Project
@@ -40,5 +44,4 @@ Step 3: Type "make test" to check the calculator with test cases in ../Samples.
 ************
 
 Try to write your own main function to use this project functions, enjoy!
-
 
