@@ -2,7 +2,7 @@
  * Name:        pbi4rsa.c
  * Description: Portable big integer library for RSA.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0525251833H0825251930L00720
+ * File ID:     0525251833H0827250217L00714
  * License:     GPLv3.
  */
 
@@ -519,6 +519,23 @@ Lbl_Error:
 
 /* Function name: pbrEncrypt
  * Description:   RSA encryption algorithm.
+ * Parameter:
+ *       prc Pointer to the new allocated cipher chain.
+ * Return value:  N/A.
+ */
+void pbrDestroyRSACipherChain(P_RSA_CIPHER prc)
+{
+	register P_RSA_CIPHER ppp = prc;
+	while (NULL != ppp)
+	{
+		register P_RSA_CIPHER p = ppp->next;
+		pbrDeleteRSACipher(ppp);
+		ppp = p;
+	}
+}
+
+/* Function name: pbrEncrypt
+ * Description:   RSA encryption algorithm.
  * Parameters:
  *       pubk Pointer to the public key.
  *          s Pointer to the buffer you want to encrypt.
@@ -537,7 +554,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 	
 	P_RSA_CIPHER prc = pbrCreateRSACipher();
 	P_RSA_CIPHER prr = pbrCreateRSACipher();
-	P_RSA_CIPHER ppp = prc, rrp = prr;
+	P_RSA_CIPHER phd = prc, ppp = prc, rrp = prr;
 	
 	/* Shrink capacity. */
 	pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), FALSE);
@@ -625,32 +642,9 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 		ppp = ppp->next;
 	}
 	
-	ppp = prc;
-	while (NULL != ppp)
-	{
-		register P_RSA_CIPHER p = ppp->next;
-		pbrDeleteRSACipher(ppp);
-		ppp = p;
-	}
+	pbrDestroyRSACipherChain(phd);
 	
 	return rrp;
-}
-
-/* Function name: pbrEncrypt
- * Description:   RSA encryption algorithm.
- * Parameter:
- *       prc Pointer to the new allocated cipher chain.
- * Return value:  N/A.
- */
-void pbrDestroyRSACipherChain(P_RSA_CIPHER prc)
-{
-	register P_RSA_CIPHER ppp = prc;
-	while (NULL != ppp)
-	{
-		register P_RSA_CIPHER p = ppp->next;
-		pbrDeleteRSACipher(ppp);
-		ppp = p;
-	}
 }
 
 /* Function name: pbrDecrypt

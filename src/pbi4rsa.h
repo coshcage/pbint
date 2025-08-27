@@ -37,8 +37,9 @@ void            pbrFreeRSACipher         (P_RSA_CIPHER pc);
 P_RSA_CIPHER    pbrCreateRSACipher       (void);
 void            pbrDeleteRSACipher       (P_RSA_CIPHER pc);
 _boolean        pbrGetRSAKey             (P_RSA_KEY pubk, P_RSA_KEY pvtk, P_BINT p, P_BINT q, int seed);
-P_RSA_CIPHER    pbrEncrypt               (P_RSA_KEY pubk, unsigned char * s, size_t len);
 void            pbrDestroyRSACipherChain (P_RSA_CIPHER prc);
+P_RSA_CIPHER    pbrEncrypt               (P_RSA_KEY pubk, unsigned char * s, size_t len);
 unsigned char * pbrDecrypt               (size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY prvk);
 
 #endif
+
