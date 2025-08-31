@@ -520,8 +520,8 @@ Lbl_Error:
 	return FALSE;
 }
 
-/* Function name: pbrEncrypt
- * Description:   RSA encryption algorithm.
+/* Function name: pbrDestroyRSACipherChain
+ * Description:   Deallocate RSA cipher chain.
  * Parameter:
  *       prc Pointer to the new allocated cipher chain.
  * Return value:  N/A.
