@@ -2,7 +2,7 @@
  * Name:        pbi4rsa.c
  * Description: Portable big integer library for RSA.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0525251833H0827250217L00714
+ * File ID:     0525251833H0831251014L00717
  * License:     GPLv3.
  */
 
@@ -252,6 +252,9 @@ static _ub _pbrE(P_BINT f, int seed)
 	
 	if (GETABS(GETFLAG(f)) > 1)
 		max = INT_MAX;
+
+	if (max > RAND_MAX)
+		max = RAND_MAX;
 	
 	pbkInitBint(&E, re = 1 + rand() / ((RAND_MAX + 1u) / max));
 	pbkReallocBint(&E, GETABS(GETFLAG(&E)), FALSE);
@@ -696,7 +699,7 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 			{
 				for (j = 0; j < ppp->bilu; ++j)
 				{
-					*(psz++) = (unsigned char)(M.data[i] >> (j * sizeof(_ub)));
+					*(psz++) = (unsigned char)(M.data[i] >> (j * CHAR_BIT));
 				}
 			}
 			
