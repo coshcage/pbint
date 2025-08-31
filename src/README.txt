@@ -24,10 +24,6 @@ pbm.h                   Mathematical Module's function declarations.
 pbm.c                   Mathematical Function implements.
 pbx.h                   External Memory Support Module's data structures and function definitions.
 pbx.c                   External Memory Support Module's function implements.
-pbi4rsa.h               Portable big integer library for RSA interface.
-pbi4rsa.c               Portable big integer library for RSA module.
-pbi4rsax.h              Portable big integer library for RSA interface.
-pbi4rsax.c              Portable big integer library for RSA eXternal memory support.
 
 *************************
 3. Building the Project
