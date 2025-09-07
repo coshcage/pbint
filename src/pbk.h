@@ -2,7 +2,7 @@
  * Name:        pbk.h
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323A0907251900L00139
+ * File ID:     0520240323A0907251909L00140
  * License:     GPLv3.
  */
 
@@ -104,22 +104,23 @@ while (0);
 #define pbkIsBintEqualToZero(pbi) (1 == GETABS(GETFLAG(pbi)) && !(*(pbi)->data))
 
 /* Functions for big integers. */
-_boolean pbkInitBint      (P_BINT pbi, _ib  i);
-_boolean pbkReallocBint   (P_BINT pbi, _ub  size, _boolean binc);
-void     pbkFreeBint      (P_BINT pbi);
-P_BINT   pbkCreateBint    (_ib    i);
-void     pbkDeleteBint    (P_BINT pbi);
-_boolean pbkMoveBint      (P_BINT a, P_BINT b);
-P_BINT   pbkCopyBint      (P_BINT a);
-_boolean pbkIbToBint      (P_BINT a, _ib    i);
-_ib      pbkBintToIb      (P_BINT a);
-int      pbkCompareBint   (P_BINT a, P_BINT b);
-_boolean pbkAddBint       (P_BINT c, P_BINT a,    P_BINT   b);
-_boolean pbkSubtractBint  (P_BINT c, P_BINT a,    P_BINT   b);
-_boolean pbkLeftShiftBint (P_BINT a, _ub    blocks, _ub    bits);
-_boolean pbkRightShiftBint(P_BINT a, _ub    blocks, _ub    bits);
-_boolean pbkMultiplyBint  (P_BINT c, P_BINT a,    P_BINT   b);
-_boolean pbkDivideBint    (P_BINT q, P_BINT r,    P_BINT   a, P_BINT b);
+_boolean pbkInitBint       (P_BINT pbi, _ib  i);
+_boolean pbkReallocBint    (P_BINT pbi, _ub  size, _boolean binc);
+void     pbkFreeBint       (P_BINT pbi);
+P_BINT   pbkCreateBint     (_ib    i);
+void     pbkDeleteBint     (P_BINT pbi);
+_boolean pbkMoveBint       (P_BINT a, P_BINT b);
+P_BINT   pbkCopyBint       (P_BINT a);
+_boolean pbkIbToBint       (P_BINT a, _ib    i);
+_ib      pbkBintToIb       (P_BINT a);
+int      pbkCompareBint    (P_BINT a, P_BINT b);
+_boolean pbkAddBint        (P_BINT c, P_BINT a,    P_BINT   b);
+_boolean pbkSubtractBint   (P_BINT c, P_BINT a,    P_BINT   b);
+_boolean pbkLeftShiftBint  (P_BINT a, _ub    blocks, _ub    bits);
+_boolean pbkRightShiftBint (P_BINT a, _ub    blocks, _ub    bits);
+_boolean pbkMultiplyBintOld(P_BINT c, P_BINT a,    P_BINT   b);
+_boolean pbkMultiplyBintNew(P_BINT c, P_BINT a,    P_BINT   b);
+_boolean pbkDivideBint     (P_BINT q, P_BINT r,    P_BINT   a, P_BINT b);
 /* Functions for big numbers. */
 _boolean pbkInitBnum         (P_BNUM pbn, _ub    base);
 _boolean pbkReallocBnum      (P_BNUM pbn, _ub    size, _boolean binc);
