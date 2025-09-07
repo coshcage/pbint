@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B0423250443L01484
+ * File ID:     0520240323B0907251900L01597
  * License:     GPLv3.
  */
 
@@ -670,7 +670,7 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
 	}
 }
 
-/* Function name: pbkMultiplyBint
+/* Function name: pbkMultiplyBintOld
  * Description:   Multiplies two big integers and stores result to c.
  * Parameters:
  *          c Pointer to a big integer.
@@ -681,7 +681,7 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
  * Caution:       The address of c shall not equal to a or b.
  * Tip:           c := a * b;
  */
-_boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
+_boolean pbkMultiplyBintOld(P_BINT c, P_BINT a, P_BINT b)
 {
 	if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +1 * +1. */
 	{
@@ -755,6 +755,103 @@ _boolean pbkMultiplyBint(P_BINT c, P_BINT a, P_BINT b)
 			pbkFreeBint(&C);
 			return r;
 		}
+	}
+	else
+	{
+		register int r;
+		register _ib fa, fb;
+
+		fa = GETFLAG(a);
+		fb = GETFLAG(b);
+
+		SETFLAG(a, GETABS(GETFLAG(a)));
+		SETFLAG(b, GETABS(GETFLAG(b)));
+
+		r = pbkMultiplyBint(c, a, b);
+
+		SETFLAG(a, fa);
+		SETFLAG(b, fb);
+
+		if (r)
+		{
+			if (GETFLAG(a) > 0 || GETFLAG(b) > 0)
+				SETFLAG(c, -GETFLAG(c));
+		}
+
+		return r;
+	}
+}
+
+/* Function name: pbkMultiplyBintNew
+ * Description:   Multiplies two big integers and stores result to c.
+ * Parameters:
+ *          c Pointer to a big integer.
+ *          a Pointer to a big integer.
+ *          b Pointer to a big integer.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ * Caution:       The address of c shall not equal to a or b.
+ * Tip:           c := a * b;
+ */
+_boolean pbkMultiplyBintNew(P_BINT c, P_BINT a, P_BINT b)
+{
+	if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +1 * +1. */
+	{
+		register size_t i, j, k = GETFLAG(a), l = GETFLAG(b), m;
+		register _udb carry;
+		register _ub  t;
+		BINT A = { 0 };
+		_boolean r = TRUE;
+
+		if (pbkIsNotANumber(a) || pbkIsNotANumber(b))
+			return FALSE;
+
+		SETFLAG(c, 1);
+		c->data[0] = 0;
+
+		if (pbkIsBintEqualToZero(a) || pbkIsBintEqualToZero(b)) /* 0 * a = 0. */
+			return TRUE;
+
+		if (!pbkReallocBint(&A, k + l, TRUE))
+		{
+			r = FALSE;
+			goto Lbl_Clear;
+		}
+
+		for (i = 0; i < k; ++i)
+		{
+			SETFLAG(&A, 1);
+			A.data[0] = 0;
+			carry = 0;
+			for (j = 0, m = l; j < l; ++j)
+			{
+				A.data[j] = CARRY(carry);
+				carry = (_udb)a->data[i] * (_udb)b->data[j];
+				A.data[j] += (_ub)carry;
+			}
+			t = CARRY(carry);
+			if (t)
+			{
+				A.data[j] = t;
+				++m;
+			}
+
+			SETFLAG(&A, (_ib)m);
+
+			if (!pbkLeftShiftBint(&A, i, 0))
+			{
+				r = FALSE;
+				goto Lbl_Clear;
+			}
+			if (!pbkAddBint(c, c, &A))
+			{
+				r = FALSE;
+				goto Lbl_Clear;
+			}
+		}
+	Lbl_Clear:
+		pbkFreeBint(&A);
+		return r;
 	}
 	else
 	{
