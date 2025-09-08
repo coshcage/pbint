@@ -812,7 +812,7 @@ _boolean pbkMultiplyBintNew(P_BINT c, P_BINT a, P_BINT b)
 		if (pbkIsBintEqualToZero(a) || pbkIsBintEqualToZero(b)) /* 0 * a = 0. */
 			return TRUE;
 
-		if (!pbkReallocBint(&A, k + l, TRUE))
+		if (!pbkReallocBint(&A, k + l + 1, TRUE))
 		{
 			r = FALSE;
 			goto Lbl_Clear;
@@ -826,8 +826,8 @@ _boolean pbkMultiplyBintNew(P_BINT c, P_BINT a, P_BINT b)
 			for (j = 0, m = l; j < l; ++j)
 			{
 				A.data[j] = CARRY(carry);
-				carry = (_udb)a->data[i] * (_udb)b->data[j];
-				A.data[j] += (_ub)carry;
+				carry = (_udb)a->data[i] * (_udb)b->data[j] + (_udb)A.data[j];
+				A.data[j] = (_ub)carry;
 			}
 			t = CARRY(carry);
 			if (t)
