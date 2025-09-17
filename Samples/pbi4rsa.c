@@ -2,7 +2,7 @@
  * Name:        pbi4rsa.c
  * Description: Portable big integer library for RSA.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0525251833H0831251014L00717
+ * File ID:     0525251833H0917251705L00719
  * License:     GPLv3.
  */
 
@@ -662,7 +662,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
  */
 unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 {
-	BINT M = { 0 };	
+	BINT M = { 0 }, D = { 0 };	
 	
 	register size_t i, j;
 	
@@ -673,6 +673,7 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 	P_RSA_CIPHER ppp = prc;
 	
 	pbkInitBint(&M, 0);
+	pbkInitBint(&D, 0);
 	pbkReallocBint(&M, GETABS(GETFLAG(&pvtk->N)), FALSE);
 
 	while (NULL != ppp)
@@ -692,7 +693,8 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 		
 		while (NULL != ppp)
 		{
-			pbmBintExponentialModule(&M, &ppp->M, pvtk->D.data[0], &pvtk->N);
+			pbkMoveBint(&D, &pvtk->D);
+			pbmBintExponentialModuleBint(&M, &ppp->M, &D, &pvtk->N);
 			pbkReallocBint(&M, GETABS(GETFLAG(&pvtk->N)), FALSE);
 			
 			for (i = 0; i < GETABS(GETFLAG(&M)); ++i)
