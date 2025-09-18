@@ -44,8 +44,8 @@ static void _pbfFFTTransform(double * real, double * imag, size_t n, _boolean bi
 		register size_t rev = 0;
 		for (j = 0; j < bits; ++j)
 		{
-			if (i & (1U << j))
-				rev |= 1U << (bits - 1 - j);
+			if (i & (1 << j))
+				rev |= 1 << (bits - 1 - j);
 		}
 		if (rev > i)
 		{
@@ -188,7 +188,7 @@ _boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a, P_BINT b)
 			carry >>= UB_BIT;
 		}
 
-		/* Remove leading zeros */
+		/* Remove leading zeros. */
 		while (clen > 1 && 0 == c->data[clen - 1])
 			--clen;
 		SETFLAG(c, (_ib)clen * sign_a * sign_b);
