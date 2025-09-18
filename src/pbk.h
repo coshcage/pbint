@@ -2,7 +2,7 @@
  * Name:        pbk.h
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323A0907251909L00140
+ * File ID:     0520240323A0907251909L00141
  * License:     GPLv3.
  */
 
@@ -120,6 +120,7 @@ _boolean pbkLeftShiftBint  (P_BINT a, _ub    blocks, _ub    bits);
 _boolean pbkRightShiftBint (P_BINT a, _ub    blocks, _ub    bits);
 _boolean pbkMultiplyBintOld(P_BINT c, P_BINT a,    P_BINT   b);
 _boolean pbkMultiplyBintNew(P_BINT c, P_BINT a,    P_BINT   b);
+_boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a,    P_BINT   b);
 _boolean pbkDivideBint     (P_BINT q, P_BINT r,    P_BINT   a, P_BINT b);
 /* Functions for big numbers. */
 _boolean pbkInitBnum         (P_BNUM pbn, _ub    base);
@@ -134,7 +135,7 @@ void     pbkPrintBnum        (P_BNUM pbn);
 _boolean pbkBintToDecimalBnum(P_BNUM x,   P_BINT a);
 _boolean pbkDecimalBnumToBint(P_BINT x,   P_BNUM a);
 
-#define pbkMultiplyBint pbkMultiplyBintNew
+#define pbkMultiplyBint pbkMultiplyBintFFT
 
 #endif
 
