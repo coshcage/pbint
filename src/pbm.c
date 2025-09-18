@@ -2,7 +2,7 @@
  * Name:        pbm.c
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323D0917251700L00573
+ * File ID:     0520240323D0917251700L00633
  * License:     GPLv3.
  */
 
@@ -79,6 +79,66 @@ _boolean pbmBintPower(P_BINT r, P_BINT a, _ub n)
 				goto Lbl_Failed;
 
 			n >>= 1;
+		}
+
+		pbkFreeBint(&A);
+		pbkFreeBint(&T);
+		pbkFreeBint(&R);
+
+		return TRUE;
+	}
+Lbl_Failed:
+	pbkFreeBint(&A);
+	pbkFreeBint(&T);
+	pbkFreeBint(&R);
+
+	return FALSE;
+}
+
+/* Function name: pbmBintPowerBint
+ * Description:   Calculates the power of a big integer.
+ * Parameters:
+ *          r Pointer to a big integer that is the result.
+ *          a Pointer to a big integer.
+ *          n Power of n.
+ * Return value:  TRUE:  Succeeded.
+ *                FALSE: Failed.
+ * Caution:       Big integer parameter n will change to value zero after invoking.
+ * Tip:           r := a ^ n; (r := power(a, n);)
+ *                This function uses quick power algorithm.
+ */
+_boolean pbmBintPowerBint(P_BINT r, P_BINT a, P_BINT n)
+{
+	BINT A = { 0 }, T = { 0 }, R = { 0 };
+	if (pbkIsNotANumber(a) || pbkIsNotANumber(r))
+		return FALSE;
+	else
+	{
+		SETFLAG(r, 1);
+		r->data[0] = 1;
+
+		pbkInitBint(&R, 0);
+		pbkInitBint(&T, 0);
+		pbkMoveBint(&A, a);
+
+		while (! pbkIsBintEqualToZero(n))
+		{
+			if (n->data[0] & 1)
+			{
+				if (!pbkMoveBint(&R, r))
+					goto Lbl_Failed;
+				if (!pbkMultiplyBint(r, &R, &A))
+					goto Lbl_Failed;
+			}
+
+			if (!pbkMultiplyBint(&T, &A, &A))
+				goto Lbl_Failed;
+
+			if (!pbkMoveBint(&A, &T))
+				goto Lbl_Failed;
+
+			if (!pbkRightShiftBint(n, 0, 1))
+				goto Lbl_Failed;
 		}
 
 		pbkFreeBint(&A);
