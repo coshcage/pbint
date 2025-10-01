@@ -1319,7 +1319,7 @@ _boolean pbkIbToBnum(P_BNUM pbn, _ib n)
  *                FALSE: Failed.
  * Caution:       This string shall contain ASCII number 0-9. And Shall not contain minus sign(-).
  */
-_boolean pbkDecimalSzToBnum(P_BNUM pbn, char * str)
+_boolean pbkDecimalSzToBnum(P_BNUM pbn, const char * str)
 {
 	register size_t i, j = strlen(str);
 	if (pbkReallocBnum(pbn, (_ub)j, TRUE))
@@ -1344,7 +1344,7 @@ _boolean pbkDecimalSzToBnum(P_BNUM pbn, char * str)
 /* Function name: pbkPrintBnum
  * Description:   Print a big number.
  * Parameter:
- *       pbn Pointer to a big integer.
+ *       pbn Pointer to a big number.
  * Return value:  N/A.
  */
 void pbkPrintBnum(P_BNUM pbn)

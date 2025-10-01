@@ -130,7 +130,7 @@ P_BNUM   pbkCreateBnum       (_ub    base);
 void     pbkDeleteBnum       (P_BNUM pbn);
 _boolean pbkMoveBnum         (P_BNUM a,   P_BNUM b);
 _boolean pbkIbToBnum         (P_BNUM pbn, _ib    n);
-_boolean pbkDecimalSzToBnum  (P_BNUM pbn, char * str);
+_boolean pbkDecimalSzToBnum  (P_BNUM pbn, const char * str);
 void     pbkPrintBnum        (P_BNUM pbn);
 _boolean pbkBintToDecimalBnum(P_BNUM x,   P_BINT a);
 _boolean pbkDecimalBnumToBint(P_BINT x,   P_BNUM a);
