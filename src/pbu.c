@@ -6,7 +6,7 @@
  * License:     GPLv3.
  */
 
-#include <string.h>
+#include <string.h> /* Using function memcpy. */
 #include "pbu.h"
 
 /* Function name: pbuDecimalSzToBint
@@ -69,7 +69,7 @@ _boolean pbuFPrintDecimalBint(FILE * fp, P_BINT pbi)
 		register size_t i;
 		
 		if (GETFLAG(pbi) < 0)
-			putchar('-');
+			fputc('-', fp);
 		
 		for (i = GETABS(GETFLAG(&n)); i > 0; --i)
 			fputc('0' + n.data[i - 1], fp);
@@ -119,7 +119,7 @@ _boolean pbuSPrintDecimalBint(char * str, P_BINT pbi)
 		register size_t i;
 		
 		if (GETFLAG(pbi) < 0)
-			putchar('-');
+			*str++ = '-';
 		
 		for (i = GETABS(GETFLAG(&n)); i > 0; --i)
 			*str++ = (char)'0' + n.data[i - 1];

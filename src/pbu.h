@@ -9,7 +9,7 @@
 #ifndef _PBU_H_
 #define _PBU_H_
 
-#include <stdio.h>
+#include <stdio.h> /* Using structure type FILE, and function fprintf and fputc. */
 #include "pbk.h"
 
 /* Function declarations. */
