@@ -153,8 +153,8 @@ void pbkDeleteBint(P_BINT pbi)
 /* Function name: pbkMoveBint
  * Description:   Move the memory of a big integer to another big integer.
  * Parameters:
- *         a Pointer to a big integer.
- *         a Pointer to another big integer.
+ *          a Pointer to a big integer.
+ *          b Pointer to another big integer.
  * Return value:  TRUE:  Succeeded.
  *                FALSE: Failed.
  * Caution:       Parameter a and b shall not be NULL.
