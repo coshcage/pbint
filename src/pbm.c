@@ -215,7 +215,7 @@ Lbl_Failed:
 	return FALSE;
 }
 
-/* Function name: pbmBintExponentialModule
+/* Function name: pbmBintExponentialModuleBint
  * Description:   Calculates exp mod.
  * Parameters:
  *          r Pointer to a big integer that is the result.
@@ -530,7 +530,7 @@ Lbl_Finish:
  */
 _boolean pbmMillerRabinTest(P_BINT n, _ub k)
 {
-	BINT A = { 0 }, X = { 0 }, N_1 = { 0 }, U = { 0 }, V = { 0 };
+	BINT A = { 0 }, X = { 0 }, N_1 = { 0 }, U = { 0 }, V = { 0 }, T = { 0 };
 	_boolean r = TRUE;
 	_udb t = 0, s;
 	size_t i;
@@ -550,6 +550,7 @@ _boolean pbmMillerRabinTest(P_BINT n, _ub k)
 		pbkInitBint(&X, 1);
 		pbkInitBint(&N_1, 0);
 		pbkInitBint(&V, 0);
+		pbkInitBint(&T, 0);
 
 		if (!pbkSubtractBint(&N_1, n, &X))
 		{
@@ -588,7 +589,13 @@ _boolean pbmMillerRabinTest(P_BINT n, _ub k)
 				}
 			}
 
-			if (!pbmBintExponentialModule(&V, &A, U.data[0], n))
+			if (!pbkMoveBint(&T, &U))
+			{
+				r = FALSE;
+				goto Lbl_Finish;
+			}
+			
+			if (!pbmBintExponentialModuleBint(&V, &A, &T, n))
 			{
 				r = FALSE;
 				goto Lbl_Finish;
@@ -628,6 +635,7 @@ Lbl_Finish:
 	pbkFreeBint(&N_1);
 	pbkFreeBint(&U);
 	pbkFreeBint(&V);
+	pbkFreeBint(&T);
 	return r;
 }
 
