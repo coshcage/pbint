@@ -2,7 +2,7 @@
  * Name:        pbi4rsa.c
  * Description: Portable big integer library for RSA.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0525251833H0917251705L00719
+ * File ID:     0525251833H1027251100L00718
  * License:     GPLv3.
  */
 
@@ -536,7 +536,7 @@ void pbrDestroyRSACipherChain(P_RSA_CIPHER prc)
 		ppp = p;
 	}
 }
-
+#include "pbu.h"
 /* Function name: pbrEncrypt
  * Description:   RSA encryption algorithm.
  * Parameters:
@@ -552,7 +552,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 	register size_t i, j, k, l;
 	register unsigned char c = 0;
 	register _boolean bcl = FALSE; /* Boolean c last. */
-	register unsigned char * ps = s;
+	register unsigned char * ps = s, iv = pubk->E;
 	_stdiv_t z = _stdiv(len, sizeof(_ub));
 	
 	P_RSA_CIPHER prc = pbrCreateRSACipher();
@@ -563,9 +563,9 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 	pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), FALSE);
 	pbkReallocBint(&prr->M, GETABS(GETFLAG(&pubk->N)), FALSE);
 	
-	for (k = i = 0; i < z.quot; ++i, ++k)
+	for (k = l = i = 0; i < z.quot; ++i)
 	{
-		for (l = j = 0; j < sizeof(_ub) || bcl; ++j, ++l)
+		for (j = 0; j < sizeof(_ub) || bcl; ++j, ++l)
 		{
 			if (bcl)
 			{
@@ -579,7 +579,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 
 			if (ps - s < (ptrdiff_t)len)
 			{
-				prc->bilu = l + 1;
+				++prc->bilu;
 				c = *ps++;
 				prc->M.data[k] |= (c << (CHAR_BIT * l));
 				if (pbkCompareBint(&pubk->N, &prc->M) <= 0) /* M > N. */
@@ -595,9 +595,12 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 				}
 			}
 		}
+		prc->next = pbrCreateRSACipher();
+		prc = prc->next;
+		pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), FALSE);
 	}
 	
-	for (l = j = 0; j < z.rem || bcl; ++j, ++l)
+	for (j = 0; j < z.rem || bcl; ++j, ++l)
 	{
 		if (bcl)
 		{
@@ -611,7 +614,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 
 		if (ps - s < (ptrdiff_t)len)
 		{
-			prc->bilu = l + 1;
+			++prc->bilu;
 			c = *ps++;
 			prc->M.data[k] |= (c << (CHAR_BIT * l));
 			if (pbkCompareBint(&pubk->N, &prc->M) <= 0) /* M > N. */
@@ -627,8 +630,6 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 			}
 		}
 	}
-	
-	/* Verbose: prc->bilu = z.rem; */
 	
 	while (NULL != ppp)
 	{
@@ -678,10 +679,7 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 
 	while (NULL != ppp)
 	{
-		if (GETABS(GETFLAG(&ppp->M)) < 1)
-			len += (ppp->bilu);
-		else
-			len += (GETABS(GETFLAG(&ppp->M)) - 1) * sizeof(_ub) + ppp->bilu;
+		len += (ppp->bilu);
 		ppp = ppp->next;
 	}
 	
@@ -696,7 +694,7 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 			pbkMoveBint(&D, &pvtk->D);
 			pbmBintExponentialModuleBint(&M, &ppp->M, &D, &pvtk->N);
 			pbkReallocBint(&M, GETABS(GETFLAG(&pvtk->N)), FALSE);
-			
+
 			for (i = 0; i < GETABS(GETFLAG(&M)); ++i)
 			{
 				for (j = 0; j < ppp->bilu; ++j)
