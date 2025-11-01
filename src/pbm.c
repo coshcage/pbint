@@ -230,6 +230,7 @@ Lbl_Failed:
  */
 _boolean pbmBintExponentialModuleBint(P_BINT r, P_BINT a, P_BINT n, P_BINT m)
 {
+	long i = 1;
 	BINT R = { 0 }, T = { 0 };
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(m))
 		return FALSE;
@@ -238,8 +239,8 @@ _boolean pbmBintExponentialModuleBint(P_BINT r, P_BINT a, P_BINT n, P_BINT m)
 		pbkInitBint(&R, 0);
 		pbkInitBint(&T, 0);
 
-		pbkDivideBint(NULL, &R, a, m);
-		pbkMoveBint(a, &R);
+		pbkDivideBint(NULL, &T, a, m);
+		pbkMoveBint(a, &T);
 
 		SETFLAG(r, 1);
 		r->data[0] = 1;
@@ -260,7 +261,6 @@ _boolean pbmBintExponentialModuleBint(P_BINT r, P_BINT a, P_BINT n, P_BINT m)
 				goto Lbl_Failed;
 			if (!pbkDivideBint(NULL, a, &T, m))
 				goto Lbl_Failed;
-
 			if (!pbkRightShiftBint(n, 0, 1))
 				goto Lbl_Failed;
 		}

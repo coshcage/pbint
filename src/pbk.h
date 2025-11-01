@@ -135,7 +135,7 @@ void     pbkPrintBnum        (P_BNUM pbn);
 _boolean pbkBintToDecimalBnum(P_BNUM x,   P_BINT a);
 _boolean pbkDecimalBnumToBint(P_BINT x,   P_BNUM a);
 
-#define pbkMultiplyBint pbkMultiplyBintFFT
+#define pbkMultiplyBint pbkMultiplyBintNew
 
 #endif
 

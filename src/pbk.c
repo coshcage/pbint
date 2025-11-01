@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B0918251927L01602
+ * File ID:     0520240323B1101251046L01605
  * License:     GPLv3.
  */
 
@@ -632,8 +632,8 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
 	else
 	{
 		register _ubdiv_t u = _ubdiv(bits, UB_BIT);
-		register size_t i, j;
-		register _ub n = 0;
+		register _ub n, n2;
+		register size_t i;
 
 		/* Handle blocks first. */
 		if (blocks)
@@ -653,16 +653,14 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
 		/* Handle bits next. */
 		if (u.rem)
 		{
-			j = GETABS(GETFLAG(a)) - 1;
-			for (i = 0; i < j; ++i)
+			for (n2 = n = 0, i = GETABS(GETFLAG(a)); i > 0; --i)
 			{
-				a->data[i] >>= u.rem;
-				n = a->data[i + 1];
-				a->data[i + 1] = (_ub)(n >> u.rem);
-				a->data[i] |= (n << (UB_BIT - u.rem));
+				n = a->data[i - 1] << (UB_BIT - u.rem);
+				a->data[i - 1] >>= u.rem;
+				a->data[i - 1] |= n2;
+				n2 = n;
+				
 			}
-			if (GETABS(GETFLAG(a)) <= 1)
-				a->data[0] >>= u.rem;
 			pbkShrinkZeroFlag(a);
 		}
 
@@ -943,9 +941,13 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 					/* Divisor and quotient. */
 					BINT D = { 0 }, Q = { 0 }, C = { 0 }, T = { 0 }, X = { 0 };
 
-					pbkMoveBint(&Q, a);
+					pbkInitBint(&D, 0);
+					pbkInitBint(&Q, 0);
+					pbkInitBint(&C, 0);
 					pbkInitBint(&T, 0);
 					pbkInitBint(&X, 0);
+
+					pbkMoveBint(&Q, a);
 					
 					if (NULL != q)
 						SETFLAG(q, 0);
