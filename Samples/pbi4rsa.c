@@ -2,7 +2,7 @@
  * Name:        pbi4rsa.c
  * Description: Portable big integer library for RSA.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0525251833H1027251100L00718
+ * File ID:     0525251833H1101251048L00717
  * License:     GPLv3.
  */
 
@@ -536,7 +536,7 @@ void pbrDestroyRSACipherChain(P_RSA_CIPHER prc)
 		ppp = p;
 	}
 }
-#include "pbu.h"
+
 /* Function name: pbrEncrypt
  * Description:   RSA encryption algorithm.
  * Parameters:
@@ -714,4 +714,3 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 	
 	return str;
 }
-
