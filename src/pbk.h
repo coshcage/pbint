@@ -9,16 +9,9 @@
 #ifndef _PBK_H_
 #define _PBK_H_
 
-#include <stddef.h> /* Using type size_t and ptrdiff_t. */
-#include <limits.h> /* Using macro CHAR_BIT. */
-
-/* No need to explain these following two. */
-#ifndef TRUE
-#define TRUE  1
-#endif
-#ifndef FALSE
-#define FALSE 0
-#endif
+#include <stddef.h>  /* Using type size_t and ptrdiff_t. */
+#include <limits.h>  /* Using macro CHAR_BIT. */
+#include <stdbool.h> /* Boolean type and constants. */
 
 #define BINT_INIT_SIZE 1024U /* Initial big integer size. */
 #define BINT_INIT_INCL 1024U /* Initial big integer incremental. */
@@ -31,9 +24,6 @@ typedef int                _ib;  /* Integer block. */
 typedef unsigned int       _ub;  /* Unsigned integer block. */
 typedef long long          _idb; /* Integer double block. */
 typedef unsigned long long _udb; /* Unsigned integer double block. */
-
-/* Boolean type does not need to change usually. */
-typedef unsigned int       _boolean; /* Boolean. */
 
 #define UBLOCK_FULL (~(_ub)0)
 #define IBLOCK_FULL ((_ib)((UBLOCK_FULL) >> 1))
@@ -104,36 +94,36 @@ while (0);
 #define pbkIsBintEqualToZero(pbi) (1 == GETABS(GETFLAG(pbi)) && !(*(pbi)->data))
 
 /* Functions for big integers. */
-_boolean pbkInitBint       (P_BINT pbi, _ib  i);
-_boolean pbkReallocBint    (P_BINT pbi, _ub  size, _boolean binc);
-void     pbkFreeBint       (P_BINT pbi);
-P_BINT   pbkCreateBint     (_ib    i);
-void     pbkDeleteBint     (P_BINT pbi);
-_boolean pbkMoveBint       (P_BINT a, P_BINT b);
-P_BINT   pbkCopyBint       (P_BINT a);
-_boolean pbkIbToBint       (P_BINT a, _ib    i);
-_ib      pbkBintToIb       (P_BINT a);
-int      pbkCompareBint    (P_BINT a, P_BINT b);
-_boolean pbkAddBint        (P_BINT c, P_BINT a,    P_BINT   b);
-_boolean pbkSubtractBint   (P_BINT c, P_BINT a,    P_BINT   b);
-_boolean pbkLeftShiftBint  (P_BINT a, _ub    blocks, _ub    bits);
-_boolean pbkRightShiftBint (P_BINT a, _ub    blocks, _ub    bits);
-_boolean pbkMultiplyBintOld(P_BINT c, P_BINT a,    P_BINT   b);
-_boolean pbkMultiplyBintNew(P_BINT c, P_BINT a,    P_BINT   b);
-_boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a,    P_BINT   b);
-_boolean pbkDivideBint     (P_BINT q, P_BINT r,    P_BINT   a, P_BINT b);
+bool   pbkInitBint       (P_BINT pbi, _ib  i);
+bool   pbkReallocBint    (P_BINT pbi, _ub  size, bool binc);
+void   pbkFreeBint       (P_BINT pbi);
+P_BINT pbkCreateBint     (_ib    i);
+void   pbkDeleteBint     (P_BINT pbi);
+bool   pbkMoveBint       (P_BINT a, P_BINT b);
+P_BINT pbkCopyBint       (P_BINT a);
+bool   pbkIbToBint       (P_BINT a, _ib    i);
+_ib    pbkBintToIb       (P_BINT a);
+int    pbkCompareBint    (P_BINT a, P_BINT b);
+bool   pbkAddBint        (P_BINT c, P_BINT a,    P_BINT   b);
+bool   pbkSubtractBint   (P_BINT c, P_BINT a,    P_BINT   b);
+bool   pbkLeftShiftBint  (P_BINT a, _ub    blocks, _ub    bits);
+bool   pbkRightShiftBint (P_BINT a, _ub    blocks, _ub    bits);
+bool   pbkMultiplyBintOld(P_BINT c, P_BINT a,    P_BINT   b);
+bool   pbkMultiplyBintNew(P_BINT c, P_BINT a,    P_BINT   b);
+bool   pbkMultiplyBintFFT(P_BINT c, P_BINT a,    P_BINT   b);
+bool   pbkDivideBint     (P_BINT q, P_BINT r,    P_BINT   a, P_BINT b);
 /* Functions for big numbers. */
-_boolean pbkInitBnum         (P_BNUM pbn, _ub    base);
-_boolean pbkReallocBnum      (P_BNUM pbn, _ub    size, _boolean binc);
-void     pbkFreeBnum         (P_BNUM pbn);
-P_BNUM   pbkCreateBnum       (_ub    base);
-void     pbkDeleteBnum       (P_BNUM pbn);
-_boolean pbkMoveBnum         (P_BNUM a,   P_BNUM b);
-_boolean pbkIbToBnum         (P_BNUM pbn, _ib    n);
-_boolean pbkDecimalSzToBnum  (P_BNUM pbn, const char * str);
-void     pbkPrintBnum        (P_BNUM pbn);
-_boolean pbkBintToDecimalBnum(P_BNUM x,   P_BINT a);
-_boolean pbkDecimalBnumToBint(P_BINT x,   P_BNUM a);
+bool   pbkInitBnum         (P_BNUM pbn, _ub    base);
+bool   pbkReallocBnum      (P_BNUM pbn, _ub    size, bool binc);
+void   pbkFreeBnum         (P_BNUM pbn);
+P_BNUM pbkCreateBnum       (_ub    base);
+void   pbkDeleteBnum       (P_BNUM pbn);
+bool   pbkMoveBnum         (P_BNUM a,   P_BNUM b);
+bool   pbkIbToBnum         (P_BNUM pbn, _ib    n);
+bool   pbkDecimalSzToBnum  (P_BNUM pbn, const char * str);
+void   pbkPrintBnum        (P_BNUM pbn);
+bool   pbkBintToDecimalBnum(P_BNUM x,   P_BINT a);
+bool   pbkDecimalBnumToBint(P_BINT x,   P_BNUM a);
 
 #define pbkMultiplyBint pbkMultiplyBintNew
 

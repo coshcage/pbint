@@ -43,7 +43,7 @@ PBXERR pbxLoadBint(P_BINT pbi, FILE * fp)
 		{
 			if (_pbxGetPlatformSize() == xb.pflg)
 			{
-				if (pbkReallocBint(pbi, (_ub)GETABS(xb.flag), TRUE))
+				if (pbkReallocBint(pbi, (_ub)GETABS(xb.flag), true))
 				{
 					register size_t i = GETABS(GETFLAG(&xb)), j;
 

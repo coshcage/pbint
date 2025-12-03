@@ -14,31 +14,31 @@
  * Parameters:
  *        pbi Pointer to a big integer.
  *        str Pointer to zero terminated string..
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbuDecimalSzToBint(P_BINT pbi, const char * str)
+bool pbuDecimalSzToBint(P_BINT pbi, const char * str)
 {
 	BNUM n = { 0 };
 	
 	if (!pbkInitBnum(&n, 10))
-		return FALSE;
+		return false;
 	
 	if (!pbkDecimalSzToBnum(&n, str))
 	{
 		pbkFreeBnum(&n);
-		return FALSE;
+		return false;
 	}
 		
 	if (!pbkDecimalBnumToBint(pbi, &n))
 	{
 		pbkFreeBnum(&n);
-		return FALSE;
+		return false;
 	}
 		
 	pbkFreeBnum(&n);
 	
-	return TRUE;
+	return true;
 }
 
 /* Function name: pbuFPrintDecimalBint
@@ -46,20 +46,20 @@ _boolean pbuDecimalSzToBint(P_BINT pbi, const char * str)
  * Parameters:
  *         fp Pointer to a file.
  *        pbi Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbuFPrintDecimalBint(FILE * fp, P_BINT pbi)
+bool pbuFPrintDecimalBint(FILE * fp, P_BINT pbi)
 {
 	BNUM n = { 0 };
 	
 	if (!pbkInitBnum(&n, 10))
-		return FALSE;
+		return false;
 	
 	if (!pbkBintToDecimalBnum(&n, pbi))
 	{
 		pbkFreeBnum(&n);
-		return FALSE;
+		return false;
 	}
 	
 	if (pbkIsNotANumber(pbi))
@@ -76,17 +76,17 @@ _boolean pbuFPrintDecimalBint(FILE * fp, P_BINT pbi)
 	}
 	
 	pbkFreeBnum(&n);
-	return TRUE;
+	return true;
 }
 
 /* Function name: pbuPrintDecimalBint
  * Description:   Print a big integer to a stdout.
  * Parameter:
  *       pbi Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbuPrintDecimalBint(P_BINT pbi)
+bool pbuPrintDecimalBint(P_BINT pbi)
 {
 	return pbuFPrintDecimalBint(stdout, pbi);
 }
@@ -96,20 +96,20 @@ _boolean pbuPrintDecimalBint(P_BINT pbi)
  * Parameters:
  *        str Pointer to a string.
  *        pbi Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbuSPrintDecimalBint(char * str, P_BINT pbi)
+bool pbuSPrintDecimalBint(char * str, P_BINT pbi)
 {
 	BNUM n = { 0 };
 	
 	if (!pbkInitBnum(&n, 10))
-		return FALSE;
+		return false;
 	
 	if (!pbkBintToDecimalBnum(&n, pbi))
 	{
 		pbkFreeBnum(&n);
-		return FALSE;
+		return false;
 	}
 	
 	if (pbkIsNotANumber(pbi))
@@ -128,6 +128,6 @@ _boolean pbuSPrintDecimalBint(char * str, P_BINT pbi)
 	}
 	
 	pbkFreeBnum(&n);
-	return TRUE;
+	return true;
 }
 

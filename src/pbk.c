@@ -36,13 +36,13 @@ static _ubdiv_t _ubdiv(_ub numerator, _ub denominator)
  * Parameters:
  *        pbi Pointer to a big integer.
  *          i Initial value you want to set to big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       Big integer structure shall be initialized to 0.
  * Tip:           This function is used only to initialize big integers,
  *                but not for change the value or capacity for any big integer.
  */
-_boolean pbkInitBint(P_BINT pbi, _ib i)
+bool pbkInitBint(P_BINT pbi, _ib i)
 {
 	if (NULL == pbi->data)
 	{
@@ -53,7 +53,7 @@ _boolean pbkInitBint(P_BINT pbi, _ib i)
 		if (NULL != pbi->data)
 		{
 			pbi->data[0] = GETABS(i);
-			return TRUE;
+			return true;
 		}
 		else
 		{
@@ -61,7 +61,7 @@ _boolean pbkInitBint(P_BINT pbi, _ib i)
 			SETSIZE(pbi, 0U);
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkReallocBint
@@ -70,19 +70,19 @@ _boolean pbkInitBint(P_BINT pbi, _ib i)
  *        pbi Pointer to a big integer.
  *       size New size of capacity to big integer.
  *       binc Increase the capacity or decrease it.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           This function can be used to initialize big integers.
  */
-_boolean pbkReallocBint(P_BINT pbi, _ub size, _boolean binc)
+bool pbkReallocBint(P_BINT pbi, _ub size, bool binc)
 {
 	if (!binc && (GETSIZE(pbi) == size))
 	{
-		return TRUE;
+		return true;
 	}
 	else if (binc && (GETSIZE(pbi) >= size))
 	{
-		return TRUE;
+		return true;
 	}
 	else
 	{
@@ -90,14 +90,14 @@ _boolean pbkReallocBint(P_BINT pbi, _ub size, _boolean binc)
 		if (NULL != pnew)
 		{
 			pbi->data = pnew;
-			return TRUE;
+			return true;
 		}
 		else
 		{
 			SETFLAG(pbi, 0);
 			SETSIZE(pbi, 0U);
 			pbi->data = NULL;
-			return FALSE;
+			return false;
 		}
 	}
 }
@@ -155,20 +155,20 @@ void pbkDeleteBint(P_BINT pbi)
  * Parameters:
  *          a Pointer to a big integer.
  *          b Pointer to another big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       Parameter a and b shall not be NULL.
  * Tip:           After invoking, the capacity of a will equal to b's. 
  */
-_boolean pbkMoveBint(P_BINT a, P_BINT b)
+bool pbkMoveBint(P_BINT a, P_BINT b)
 {
-	if (pbkReallocBint(a, GETSIZE(b), TRUE))
+	if (pbkReallocBint(a, GETSIZE(b), true))
 	{
 		memmove(a->data, b->data, GETABS(GETFLAG(b)) * sizeof(_ub));
 		SETFLAG(a, GETFLAG(b));
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkCopyBint
@@ -195,17 +195,17 @@ P_BINT pbkCopyBint(P_BINT a)
  * Parameters:
  *          a Pointer to a big integer.
  *          i Value you want to set to the big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           This function will not change a's capacity.
  */
-_boolean pbkIbToBint(P_BINT a, _ib i)
+bool pbkIbToBint(P_BINT a, _ib i)
 {
 	if (pbkIsNotANumber(a))
-		return FALSE;
+		return false;
 	a->data[0] = GETABS(i);
 	SETFLAG(a, 0 == GETSGN(i) ? 1 : GETSGN(i));
-	return TRUE;
+	return true;
 }
 
 /* Function name: pbkBintToIb
@@ -348,14 +348,14 @@ int pbkCompareBint(P_BINT a, P_BINT b)
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
  *          b Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       The address of c shall not equal to a or b.
  * Tip:           c := a + b;
  */
-_boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
+bool pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
 {
-	if (pbkReallocBint(c, GETSIZE(a) > GETSIZE(b) ? GETSIZE(a) : GETSIZE(b), TRUE))
+	if (pbkReallocBint(c, GETSIZE(a) > GETSIZE(b) ? GETSIZE(a) : GETSIZE(b), true))
 	{
 		if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +1 + +1. */
 		{
@@ -364,7 +364,7 @@ _boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
 			P_BINT pir = GETFLAG(a) > GETFLAG(b) ? a : b;
 
 			if (pbkIsNotANumber(a) || pbkIsNotANumber(b))
-				return FALSE;
+				return false;
 
 			if (a == b && a->data == b->data) /* a + a = 2 * a. */
 			{
@@ -372,9 +372,9 @@ _boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
 					pbkMoveBint(c, a);
 
 				if (!pbkLeftShiftBint(c, 0, 1))
-					return FALSE;
+					return false;
 
-				return TRUE;
+				return true;
 			}
 
 			for (i = 0; i < j; ++i)
@@ -390,13 +390,13 @@ _boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
 
 			if (GETFLAG(c) + 1 >= (_ib)GETSIZE(c))
 			{
-				if (!pbkReallocBint(c, GETSIZE(c), TRUE))
-					return FALSE;
+				if (!pbkReallocBint(c, GETSIZE(c), true))
+					return false;
 			}
 			c->data[i] = (_ub)CARRY(r);
 			SETFLAG(c, (_ib)i + 1);
 			pbkShrinkZeroFlag(c);
-			return TRUE;
+			return true;
 		}
 		else if (GETFLAG(a) < 0 && GETFLAG(b) > 0) /* -1 + +1. */
 		{
@@ -439,7 +439,7 @@ _boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
 			return r;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkSubtractBint
@@ -448,33 +448,33 @@ _boolean pbkAddBint(P_BINT c, P_BINT a, P_BINT b)
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
  *          b Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       The address of c shall not equal to a or b.
  * Tip:           c := a - b;
  */
-_boolean pbkSubtractBint(P_BINT c, P_BINT a, P_BINT b)
+bool pbkSubtractBint(P_BINT c, P_BINT a, P_BINT b)
 {
-	if (pbkReallocBint(c, GETSIZE(a) > GETSIZE(b) ? GETSIZE(a) : GETSIZE(b), FALSE))
+	if (pbkReallocBint(c, GETSIZE(a) > GETSIZE(b) ? GETSIZE(a) : GETSIZE(b), false))
 	{
 		if (pbkIsNotANumber(a) || pbkIsNotANumber(b))
-			return FALSE;
+			return false;
 		else if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +1 - +1. */
 		{
 			if (pbkCompareBint(a, b) >= 0)
 			{
 				register size_t i, j = GETMIN(GETFLAG(a), GETFLAG(b)), k = GETMAX(GETFLAG(a), GETFLAG(b));
 				register _ub x, y;
-				register _boolean borrow = FALSE;
+				register bool borrow = false;
 
 				if (a == b && a->data == b->data) /* a - a = 0. */
 				{
 					pbkFreeBint(c);
 
 					if (!pbkInitBint(c, 0))
-						return FALSE;
+						return false;
 
-					return TRUE;
+					return true;
 				}
 				
 				for (i = 0; i < j; ++i)
@@ -495,11 +495,11 @@ _boolean pbkSubtractBint(P_BINT c, P_BINT a, P_BINT b)
 
 					if (x < y)
 					{
-						borrow = TRUE;
+						borrow = true;
 					}
 					else
 					{
-						borrow = FALSE;
+						borrow = false;
 					}
 				}
 				for (; i < k; ++i)
@@ -518,22 +518,22 @@ _boolean pbkSubtractBint(P_BINT c, P_BINT a, P_BINT b)
 					c->data[i] = x;
 
 					if (0 == y)
-						borrow = TRUE;
+						borrow = true;
 					else
-						borrow = FALSE;
+						borrow = false;
 				}
 				SETFLAG(c, (_ib)i);
 				pbkShrinkZeroFlag(c);
 				if (GETFLAG(c) < (_ib)(GETSIZE(c) - GETINCL(c)))
 				{
-					if (!pbkReallocBint(c, GETSIZE(c) - GETINCL(c), FALSE))
-						return FALSE;
+					if (!pbkReallocBint(c, GETSIZE(c) - GETINCL(c), false))
+						return false;
 				}
-				return TRUE;
+				return true;
 			}
 			else /* +1 - +10. */
 			{
-				register _boolean r;
+				register bool r;
 
 				r = pbkSubtractBint(c, b, a);
 
@@ -560,7 +560,7 @@ _boolean pbkSubtractBint(P_BINT c, P_BINT a, P_BINT b)
 			return r;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkLeftShiftBint
@@ -569,13 +569,13 @@ _boolean pbkSubtractBint(P_BINT c, P_BINT a, P_BINT b)
  *          c Pointer to a big integer.
  *     blocks Blocks of integer you want to shift.
  *       bits Bits of integer you want to shift.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbkLeftShiftBint(P_BINT a, _ub blocks, _ub bits)
+bool pbkLeftShiftBint(P_BINT a, _ub blocks, _ub bits)
 {
 	if (pbkIsNotANumber(a))
-		return FALSE;
+		return false;
 	else
 	{
 		register _ubdiv_t u = _ubdiv(bits, UB_BIT);
@@ -587,8 +587,8 @@ _boolean pbkLeftShiftBint(P_BINT a, _ub blocks, _ub bits)
 		/* Handle blocks first. */
 		if (GETFLAG(a) + blocks + (u.rem ? 1 : 0) >= GETSIZE(a))
 		{
-			if (!pbkReallocBint(a, GETSIZE(a) + blocks + (u.rem ? 1 : 0), TRUE))
-				return FALSE;
+			if (!pbkReallocBint(a, GETSIZE(a) + blocks + (u.rem ? 1 : 0), true))
+				return false;
 		}
 		if (blocks)
 		{
@@ -612,7 +612,7 @@ _boolean pbkLeftShiftBint(P_BINT a, _ub blocks, _ub bits)
 			pbkShrinkZeroFlag(a);
 		}
 
-		return TRUE;
+		return true;
 	}
 }
 
@@ -622,13 +622,13 @@ _boolean pbkLeftShiftBint(P_BINT a, _ub blocks, _ub bits)
  *          a Pointer to a big integer.
  *     blocks Blocks of integer you want to shift.
  *       bits Bits of integer you want to shift.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
+bool pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
 {
 	if (pbkIsNotANumber(a))
-		return FALSE;
+		return false;
 	else
 	{
 		register _ubdiv_t u = _ubdiv(bits, UB_BIT);
@@ -646,8 +646,8 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
 
 		if (GETFLAG(a) - (u.rem ? 1 : 0) - blocks < (_ib)(GETSIZE(a) - GETINCL(a)))
 		{
-			if (!pbkReallocBint(a, GETSIZE(a) - GETINCL(a), FALSE))
-				return FALSE;
+			if (!pbkReallocBint(a, GETSIZE(a) - GETINCL(a), false))
+				return false;
 		}
 
 		/* Handle bits next. */
@@ -664,7 +664,7 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
 			pbkShrinkZeroFlag(a);
 		}
 
-		return TRUE;
+		return true;
 	}
 }
 
@@ -674,12 +674,12 @@ _boolean pbkRightShiftBint(P_BINT a, _ub blocks, _ub bits)
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
  *          b Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       The address of c shall not equal to a or b.
  * Tip:           c := a * b;
  */
-_boolean pbkMultiplyBintOld(P_BINT c, P_BINT a, P_BINT b)
+bool pbkMultiplyBintOld(P_BINT c, P_BINT a, P_BINT b)
 {
 	if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +1 * +1. */
 	{
@@ -692,20 +692,20 @@ _boolean pbkMultiplyBintOld(P_BINT c, P_BINT a, P_BINT b)
 			register size_t i, j, k = GETFLAG(a), l = 0, m = 0;
 			register _ub n;
 			BINT B = { 0 }, C = { 0 };
-			_boolean r = TRUE;
+			bool r = true;
 
 			if (pbkIsNotANumber(a) || pbkIsNotANumber(b))
-				return FALSE;
+				return false;
 
 			SETFLAG(c, 1);
 			c->data[0] = 0;
 
 			if (pbkIsBintEqualToZero(a) || pbkIsBintEqualToZero(b)) /* 0 * a = 0. */
-				return TRUE;
+				return true;
 
 			if (!pbkMoveBint(&B, b))
 			{
-				r = FALSE;
+				r = false;
 				goto Lbl_Clear;
 			}
 			
@@ -721,17 +721,17 @@ _boolean pbkMultiplyBintOld(P_BINT c, P_BINT a, P_BINT b)
 						{
 							if (!pbkLeftShiftBint(&B, (_ub)m, (_ub)l))
 							{
-								r = FALSE;
+								r = false;
 								goto Lbl_Clear;
 							}
 							if (!pbkMoveBint(&C, c))
 							{
-								r = FALSE;
+								r = false;
 								goto Lbl_Clear;
 							}
 							if (!pbkAddBint(c, &B, &C))
 							{
-								r = FALSE;
+								r = false;
 								goto Lbl_Clear;
 							}
 							l = 1;
@@ -786,12 +786,12 @@ _boolean pbkMultiplyBintOld(P_BINT c, P_BINT a, P_BINT b)
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
  *          b Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       The address of c shall not equal to a or b.
  * Tip:           c := a * b;
  */
-_boolean pbkMultiplyBintNew(P_BINT c, P_BINT a, P_BINT b)
+bool pbkMultiplyBintNew(P_BINT c, P_BINT a, P_BINT b)
 {
 	if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +1 * +1. */
 	{
@@ -801,20 +801,20 @@ _boolean pbkMultiplyBintNew(P_BINT c, P_BINT a, P_BINT b)
 			register _udb carry;
 			register _ub  t;
 			BINT A = { 0 };
-			_boolean r = TRUE;
+			bool r = true;
 
 			if (pbkIsNotANumber(a) || pbkIsNotANumber(b))
-				return FALSE;
+				return false;
 
 			SETFLAG(c, 1);
 			c->data[0] = 0;
 
 			if (pbkIsBintEqualToZero(a) || pbkIsBintEqualToZero(b)) /* 0 * a = 0. */
-				return TRUE;
+				return true;
 
-			if (!pbkReallocBint(&A, k + l + 1, TRUE))
+			if (!pbkReallocBint(&A, k + l + 1, true))
 			{
-				r = FALSE;
+				r = false;
 				goto Lbl_Clear;
 			}
 
@@ -840,12 +840,12 @@ _boolean pbkMultiplyBintNew(P_BINT c, P_BINT a, P_BINT b)
 
 				if (!pbkLeftShiftBint(&A, i, 0))
 				{
-					r = FALSE;
+					r = false;
 					goto Lbl_Clear;
 				}
 				if (!pbkAddBint(c, c, &A))
 				{
-					r = FALSE;
+					r = false;
 					goto Lbl_Clear;
 				}
 			}
@@ -889,22 +889,22 @@ _boolean pbkMultiplyBintNew(P_BINT c, P_BINT a, P_BINT b)
  *          r Pointer to a big integer that is the reminder. This value can be NULL.
  *          a Pointer to a big integer that is the numerator.
  *          b Pointer to a big integer that is the denominator.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       The address of c shall not equal to a or b.
  * Tip:           q := a / b; r := a mod b;
  *                Parameter q or r can be NULL.
  */
-_boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
+bool pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 {
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(b))
-		return FALSE;
+		return false;
 	else
 	{
 		if (GETFLAG(a) > 0 && GETFLAG(b) > 0) /* +10 / +1. */
 		{
 			if (pbkIsBintEqualToZero(b)) /* 1 / 0 = NaN. */
-				return FALSE;
+				return false;
 
 			if (pbkIsBintEqualToZero(a)) /* 0 / 1 = 0...1 */
 			{
@@ -915,29 +915,29 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 				}
 				if (NULL != r)
 					if (!pbkMoveBint(r, b))
-						return FALSE;
-				return TRUE;
+						return false;
+				return true;
 			}
 
 			if (pbkCompareBint(a, b) < 0)
 			{
 				if (NULL != r)
 					if (!pbkMoveBint(r, a))
-						return FALSE;
+						return false;
 				if (NULL != q)
 					if (!pbkIbToBint(q, 0))
-						return FALSE;
-				return TRUE;
+						return false;
+				return true;
 			}
 			else
 			{
-				if ((NULL != r && pbkReallocBint(r, GETSIZE(a), FALSE)) || (NULL != q && pbkReallocBint(q, GETSIZE(a), FALSE)))
+				if ((NULL != r && pbkReallocBint(r, GETSIZE(a), false)) || (NULL != q && pbkReallocBint(q, GETSIZE(a), false)))
 				{
 					register _ub max, mid, min;
 					register ptrdiff_t i;
 					register _ub u;
 					register size_t j, k;
-					_boolean rtn = FALSE;
+					bool rtn = false;
 					/* Divisor and quotient. */
 					BINT D = { 0 }, Q = { 0 }, C = { 0 }, T = { 0 }, X = { 0 };
 
@@ -965,13 +965,13 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 
 					if (!pbkMoveBint(&D, b))
 					{
-						rtn = FALSE;
+						rtn = false;
 						goto Lbl_Failure;
 					}
 
 					if (!pbkMoveBint(&C, &Q))
 					{
-						rtn = FALSE;
+						rtn = false;
 						goto Lbl_Failure;
 					}
 
@@ -988,13 +988,13 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 
 						if (!pbkMultiplyBint(&X, &T, &D))
 						{
-							rtn = FALSE;
+							rtn = false;
 							goto Lbl_Failure;
 						}
 						
 						if (!pbkSubtractBint(&T, &Q, &X))
 						{
-							rtn = FALSE;
+							rtn = false;
 							goto Lbl_Failure;
 						}
 
@@ -1016,18 +1016,18 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 									{
 										if (!pbkMoveBint(r, &T))
 										{
-											rtn = FALSE;
+											rtn = false;
 											goto Lbl_Failure;
 										}
 									}
-									rtn = TRUE;
+									rtn = true;
 									goto Lbl_Solved;
 								}
 
 								/* If reminder is not equal to zero, then left shit r for 1 section. */
 								if (!pbkLeftShiftBint(&T, 1, 0))
 								{
-									rtn = FALSE;
+									rtn = false;
 									goto Lbl_Failure;
 								}
 
@@ -1043,7 +1043,7 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 							}
 							if (!pbkMoveBint(&C, &T))
 							{
-								rtn = FALSE;
+								rtn = false;
 								goto Lbl_Failure;
 							}
 							/* Reset dichotomization relative variables. */
@@ -1059,12 +1059,12 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 						}
 						if (!pbkMoveBint(&D, b))
 						{
-							rtn = FALSE;
+							rtn = false;
 							goto Lbl_Failure;
 						}
 						if (!pbkMoveBint(&Q, &C))
 						{
-							rtn = FALSE;
+							rtn = false;
 							goto Lbl_Failure;
 						}
 					}
@@ -1089,12 +1089,12 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 					pbkFreeBint(&X);
 					return rtn;
 				}
-				return FALSE;
+				return false;
 			}
 		}
 		else
 		{
-			register int rtn = FALSE;
+			register int rtn = false;
 			register _ib fa, fb;
 
 			fa = GETFLAG(a);
@@ -1125,21 +1125,21 @@ _boolean pbkDivideBint(P_BINT q, P_BINT r, P_BINT a, P_BINT b)
 }
 
 /* This section of current C file is for big numbers. */
-static _boolean _pbkAddAbstractBnum     (P_BNUM c, P_BNUM a, P_BNUM b);
-static _boolean _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b);
+static bool _pbkAddAbstractBnum     (P_BNUM c, P_BNUM a, P_BNUM b);
+static bool _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b);
 
 /* Function name: pbkInitBnum
  * Description:   Initialize a big number.
  * Parameters:
  *        pbn Pointer to a big number.
  *       base Base value of the big number.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       Big number structure shall be initialized to 0.
  * Tip:           This function is used only to initialize big numbers,
  *                but not for change the value or capacity for any big number.
  */
-_boolean pbkInitBnum(P_BNUM pbn, _ub base)
+bool pbkInitBnum(P_BNUM pbn, _ub base)
 {
 	if (NULL == pbn->data)
 	{
@@ -1156,10 +1156,10 @@ _boolean pbkInitBnum(P_BNUM pbn, _ub base)
 		else
 		{
 			pbn->data[0] = 0;
-			return TRUE;
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkReallocBnum
@@ -1168,19 +1168,19 @@ _boolean pbkInitBnum(P_BNUM pbn, _ub base)
  *        pbi Pointer to a big number.
  *       size New size of capacity to big number.
  *       binc Increase the capacity or decrease it.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           This function can be used to initialize big numbers.
  */
-_boolean pbkReallocBnum(P_BNUM pbn, _ub size, _boolean binc)
+bool pbkReallocBnum(P_BNUM pbn, _ub size, bool binc)
 {
 	if (!binc && (GETSIZE(pbn) == size))
 	{
-		return TRUE;
+		return true;
 	}
 	else if (binc && (GETSIZE(pbn) >= size))
 	{
-		return TRUE;
+		return true;
 	}
 	else
 	{
@@ -1188,14 +1188,14 @@ _boolean pbkReallocBnum(P_BNUM pbn, _ub size, _boolean binc)
 		if (NULL != pnew)
 		{
 			pbn->data = pnew;
-			return TRUE;
+			return true;
 		}
 		else
 		{
 			SETFLAG(pbn, 0);
 			SETSIZE(pbn, 0U);
 			pbn->data = NULL;
-			return FALSE;
+			return false;
 		}
 	}
 }
@@ -1253,21 +1253,21 @@ void pbkDeleteBnum(P_BNUM pbn)
  * Parameters:
  *         a Pointer to a big number.
  *         b Pointer to another big number.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       Parameter a and b shall not be NULL.
  * Tip:           After invoking, the capacity of a will equal to b's.
  */
-_boolean pbkMoveBnum(P_BNUM a, P_BNUM b)
+bool pbkMoveBnum(P_BNUM a, P_BNUM b)
 {
-	if (pbkReallocBnum(a, GETSIZE(b), TRUE))
+	if (pbkReallocBnum(a, GETSIZE(b), true))
 	{
 		memmove(a->data, b->data, GETABS(GETFLAG(b)));
 		SETFLAG(a, GETFLAG(b));
 		SETBASE(a, GETBASE(b));
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkIbToBnum
@@ -1275,20 +1275,20 @@ _boolean pbkMoveBnum(P_BNUM a, P_BNUM b)
  * Parameters:
  *        pbn Pointer to a big number.
  *          n Value you want to set to the big number.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           This function will not change pbn's capacity.
  */
-_boolean pbkIbToBnum(P_BNUM pbn, _ib n)
+bool pbkIbToBnum(P_BNUM pbn, _ib n)
 {
 	register _ib sign = GETSGN(n);
 	if (pbkIsNotANumber(pbn))
-		return FALSE;
+		return false;
 	if (n == 0)
 	{
 		SETFLAG(pbn, 1);
 		pbn->data[0] = 0;
-		return TRUE;
+		return true;
 	}
 
 	n = GETABS(n);
@@ -1299,8 +1299,8 @@ _boolean pbkIbToBnum(P_BNUM pbn, _ib n)
 
 		if (GETFLAG(pbn) + 1 >= (_ib)GETSIZE(pbn))
 		{
-			if (!pbkReallocBnum(pbn, GETSIZE(pbn), TRUE))
-				return FALSE;
+			if (!pbkReallocBnum(pbn, GETSIZE(pbn), true))
+				return false;
 		}
 
 		pbn->data[GETFLAG(pbn)++] = n % base;
@@ -1309,7 +1309,7 @@ _boolean pbkIbToBnum(P_BNUM pbn, _ib n)
 
 	SETFLAG(pbn, GETFLAG(pbn) * sign);
 
-	return TRUE;
+	return true;
 }
 
 /* Function name: pbkDecimalSzToBnum
@@ -1317,14 +1317,14 @@ _boolean pbkIbToBnum(P_BNUM pbn, _ib n)
  * Parameters:
  *        pbn Pointer to a big number.
  *        str Pointer to a string.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       This string shall contain ASCII number 0-9. And Shall not contain minus sign(-).
  */
-_boolean pbkDecimalSzToBnum(P_BNUM pbn, const char * str)
+bool pbkDecimalSzToBnum(P_BNUM pbn, const char * str)
 {
 	register size_t i, j = strlen(str);
-	if (pbkReallocBnum(pbn, (_ub)j, TRUE))
+	if (pbkReallocBnum(pbn, (_ub)j, true))
 	{
 		register char c;
 		SETBASE(pbn, 10);
@@ -1332,15 +1332,15 @@ _boolean pbkDecimalSzToBnum(P_BNUM pbn, const char * str)
 		{
 			c = str[j];
 			if (!(c >= '0' && c <= '9'))
-				return FALSE;
+				return false;
 			pbn->data[i] = c - '0';
 		}
 		pbn->data[i] = str[j] - '0';
 		SETFLAG(pbn, (_ib)i + 1);
 		pbkShrinkZeroFlag(pbn);
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkPrintBnum
@@ -1384,14 +1384,14 @@ void pbkPrintBnum(P_BNUM pbn)
  *          c Pointer to a big number.
  *          a Pointer to a big number.
  *          b Pointer to a big number.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       Value of parameter a and b shall be positive.
  * Tip:           c := a + b;
  */
-static _boolean _pbkAddAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
+static bool _pbkAddAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 {
-	if (pbkReallocBnum(c, GETSIZE(a) > GETSIZE(b) ? GETSIZE(a) : GETSIZE(b), TRUE))
+	if (pbkReallocBnum(c, GETSIZE(a) > GETSIZE(b) ? GETSIZE(a) : GETSIZE(b), true))
 	{
 		register _ub base = c->base;
 		register size_t i;
@@ -1416,9 +1416,9 @@ static _boolean _pbkAddAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 
 		SETFLAG(c, (_ib)i);
 
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
@@ -1428,12 +1428,12 @@ static _boolean _pbkAddAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
  *          c Pointer to a big number.
  *          a Pointer to a big number.
  *          b Pointer to a big number.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       Value of parameter a and b shall be positive.
  * Tip:           c := a - b;
  */
-static _boolean _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
+static bool _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 {
 	BNUM B = { 0 };
 
@@ -1445,16 +1445,16 @@ static _boolean _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 	SETFLAG(a, GETABS(GETFLAG(a)));
 	SETFLAG(b, GETABS(GETFLAG(b)));
 
-	if (pbkReallocBnum(c, GETFLAG(a) + GETFLAG(b), TRUE))
+	if (pbkReallocBnum(c, GETFLAG(a) + GETFLAG(b), true))
 	{
 		register size_t i;
 		register char k;
 
 		if (!pbkInitBnum(&B, GETBASE(b)))
-			return FALSE;
+			return false;
 
 		if (!pbkMoveBnum(&B, b))
-			return FALSE;
+			return false;
 
 		c->data[0] = 0;
 		SETFLAG(c, 1);
@@ -1468,7 +1468,7 @@ static _boolean _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 			/* Multiply by 10. */
 			if (GETFLAG(&B) + 1 >= (_ib)GETSIZE(&B))
 			{
-				if (!pbkReallocBnum(&B, GETSIZE(&B) + 1, TRUE))
+				if (!pbkReallocBnum(&B, GETSIZE(&B) + 1, true))
 					goto Lbl_Failed;
 			}
 			memmove(B.data + 1, B.data, GETABS(GETFLAG(&B)));
@@ -1483,7 +1483,7 @@ static _boolean _pbkMultiplyAbstractBnum(P_BNUM c, P_BNUM a, P_BNUM b)
 		SETFLAG(a, fa);
 		SETFLAG(b, fb);
 
-		return TRUE;
+		return true;
 	}
 
 Lbl_Failed:
@@ -1492,7 +1492,7 @@ Lbl_Failed:
 	SETFLAG(a, fa);
 	SETFLAG(b, fb);
 
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkBintToDecimalBnum
@@ -1500,15 +1500,15 @@ Lbl_Failed:
  * Parameters:
  *          x Pointer to a big number.
  *          a Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           This function is used to output a big integer.
  */
-_boolean pbkBintToDecimalBnum(P_BNUM x, P_BINT a)
+bool pbkBintToDecimalBnum(P_BNUM x, P_BINT a)
 {
 	BNUM B = { 0 }, ak = { 0 }, X = { 0 };
 	if (pbkIsNotANumber(a))
-		return FALSE;
+		return false;
 	else
 	{
 		register size_t i, j;
@@ -1543,13 +1543,13 @@ _boolean pbkBintToDecimalBnum(P_BNUM x, P_BINT a)
 		pbkFreeBnum(&ak);
 		pbkFreeBnum(&X);
 		GETFLAG(x) *= GETSGN(GETFLAG(a));
-		return TRUE;
+		return true;
 	}
 Lbl_Failed:
 	pbkFreeBnum(&B);
 	pbkFreeBnum(&ak);
 	pbkFreeBnum(&X);
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbkBintToDecimalBnum
@@ -1557,15 +1557,15 @@ Lbl_Failed:
  * Parameters:
  *          x Pointer to a big integer.
  *          a Pointer to a big number.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           This function is used to input a big integer from a big number.
  */
-_boolean pbkDecimalBnumToBint(P_BINT x, P_BNUM a)
+bool pbkDecimalBnumToBint(P_BINT x, P_BNUM a)
 {
 	BINT B = { 0 }, ak = { 0 }, X = { 0 };
 	if (pbkIsNotANumber(a))
-		return FALSE;
+		return false;
 	else
 	{
 		register _ub d;
@@ -1592,13 +1592,13 @@ _boolean pbkDecimalBnumToBint(P_BINT x, P_BNUM a)
 		pbkFreeBint(&B);
 		pbkFreeBint(&ak);
 		pbkFreeBint(&X);
-		return TRUE;
+		return true;
 	}
 Lbl_Failed:
 	pbkFreeBint(&B);
 	pbkFreeBint(&ak);
 	pbkFreeBint(&X);
 	GETFLAG(x) *= GETSGN(GETFLAG(a));
-	return FALSE;
+	return false;
 }
 

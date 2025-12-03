@@ -28,15 +28,15 @@ typedef struct st_RSA_CIPHER
 } RSA_CIPHER, * P_RSA_CIPHER;
 
 /* Exported functions are listed here. */
-_boolean        pbrInitRSAKey            (P_RSA_KEY pk);
+bool            pbrInitRSAKey            (P_RSA_KEY pk);
 void            pbrFreeRSAKey            (P_RSA_KEY pk);
 P_RSA_KEY       pbrCreateRSAKey          (void);
 void            pbrDeleteRSAKey          (P_RSA_KEY pk);
-_boolean        pbrInitRSACipher         (P_RSA_CIPHER pc);
+bool            pbrInitRSACipher         (P_RSA_CIPHER pc);
 void            pbrFreeRSACipher         (P_RSA_CIPHER pc);
 P_RSA_CIPHER    pbrCreateRSACipher       (void);
 void            pbrDeleteRSACipher       (P_RSA_CIPHER pc);
-_boolean        pbrGetRSAKey             (P_RSA_KEY pubk, P_RSA_KEY pvtk, P_BINT p, P_BINT q, int seed);
+bool            pbrGetRSAKey             (P_RSA_KEY pubk, P_RSA_KEY pvtk, P_BINT p, P_BINT q, int seed);
 void            pbrDestroyRSACipherChain (P_RSA_CIPHER prc);
 P_RSA_CIPHER    pbrEncrypt               (P_RSA_KEY pubk, unsigned char * s, size_t len);
 unsigned char * pbrDecrypt               (size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY prvk);

@@ -138,7 +138,7 @@ PBXERR pbrLoadRSACipher(P_RSA_CIPHER * pprchead, FILE * fp)
 			for (p = *pprchead, i = 0; i < xrc.size; ++i)
 			{
 				PBXERR r = pbxLoadBint(&p->M, fp);
-				pbkReallocBint(&p->M, GETABS(GETFLAG(&p->M)), FALSE);
+				pbkReallocBint(&p->M, GETABS(GETFLAG(&p->M)), false);
 				if (PXE_NONE != r)
 				{
 					if (NULL != pprchead)

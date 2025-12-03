@@ -13,10 +13,10 @@
 #include "pbk.h"
 
 /* Function declarations. */
-_boolean pbuDecimalSzToBint   (P_BINT pbi, const char * str);
-_boolean pbuFPrintDecimalBint (FILE * fp,  P_BINT       pbi);
-_boolean pbuPrintDecimalBint  (P_BINT pbi);
-_boolean pbuSPrintDecimalBint (char * str, P_BINT       pbi);
+bool pbuDecimalSzToBint   (P_BINT pbi, const char * str);
+bool pbuFPrintDecimalBint (FILE * fp,  P_BINT       pbi);
+bool pbuPrintDecimalBint  (P_BINT pbi);
+bool pbuSPrintDecimalBint (char * str, P_BINT       pbi);
 
 #endif
 

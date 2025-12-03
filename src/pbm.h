@@ -12,16 +12,16 @@
 #include "pbk.h"
 
 /* Function declarations. */
-_boolean pbmBintPower                (P_BINT r, P_BINT a,      _ub      n);
-_boolean pbmBintPowerBint            (P_BINT r, P_BINT a,      P_BINT   n);
-_boolean pbmBintExponentialModule    (P_BINT r, P_BINT a,      _ub      n,     P_BINT m);
-_boolean pbmBintExponentialModuleBint(P_BINT r, P_BINT a,      P_BINT   n,     P_BINT m);
-_boolean pbmUbFactorial              (P_BINT r, _ub    n);
-_boolean pbmBintSquareRoot           (P_BINT r, P_BINT n);
-_boolean pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a,      P_BINT   b);
-_boolean pbmBintLeastCommonMultiple  (P_BINT r, P_BINT a,      P_BINT   b);
-_boolean pbmRandomGenerator          (P_BINT r, _ub    blocks, _boolean blarge);
-_boolean pbmMillerRabinTest          (P_BINT n, _ub    k);
+bool pbmBintPower                (P_BINT r, P_BINT a,      _ub      n);
+bool pbmBintPowerBint            (P_BINT r, P_BINT a,      P_BINT   n);
+bool pbmBintExponentialModule    (P_BINT r, P_BINT a,      _ub      n,     P_BINT m);
+bool pbmBintExponentialModuleBint(P_BINT r, P_BINT a,      P_BINT   n,     P_BINT m);
+bool pbmUbFactorial              (P_BINT r, _ub    n);
+bool pbmBintSquareRoot           (P_BINT r, P_BINT n);
+bool pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a,      P_BINT   b);
+bool pbmBintLeastCommonMultiple  (P_BINT r, P_BINT a,      P_BINT   b);
+bool pbmRandomGenerator          (P_BINT r, _ub    blocks, bool     blarge);
+bool pbmMillerRabinTest          (P_BINT n, _ub    k);
 
 #endif
 

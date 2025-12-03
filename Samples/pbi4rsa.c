@@ -20,10 +20,10 @@ typedef struct _st_stdiv_t
 
 /* File level function declarations. */
 static _stdiv_t _stdiv            (size_t numerator, size_t denominator);
-static _boolean _pbrFi            (P_BINT f, P_BINT p, P_BINT q);
+static bool _pbrFi            (P_BINT f, P_BINT p, P_BINT q);
 static _ub      _pbrE             (P_BINT f, int seed);
-static _boolean _pbrXGCD          (P_BINT or, P_BINT os, P_BINT ot, P_BINT a, P_BINT m);
-static _boolean _pbrD             (P_BINT d, P_BINT e, P_BINT f);
+static bool _pbrXGCD          (P_BINT or, P_BINT os, P_BINT ot, P_BINT a, P_BINT m);
+static bool _pbrD             (P_BINT d, P_BINT e, P_BINT f);
 static void     _pbkSecureFreeBint(P_BINT pbi);
 
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
@@ -68,20 +68,20 @@ static void _pbkSecureFreeBint(P_BINT pbi)
  * Description:   Initialize a RSA key.
  * Parameter:
  *        pk Pointer to the RSA key you want to initialize.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbrInitRSAKey(P_RSA_KEY pk)
+bool pbrInitRSAKey(P_RSA_KEY pk)
 {
 	pk->E = 0;
 	if (! pbkInitBint(&pk->N, 0))
-		return FALSE;
+		return false;
 	if (! pbkInitBint(&pk->D, 0))
 	{
 		pbkFreeBint(&pk->N);
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
 }
 
 /* Function name: pbrFreeRSAKey
@@ -131,16 +131,16 @@ void pbrDeleteRSAKey(P_RSA_KEY pk)
  * Description:   Initialize a RSA cipher structure.
  * Parameter:
  *        pc Pointer to the RSA cipher structure you want to initialize.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbrInitRSACipher(P_RSA_CIPHER pc)
+bool pbrInitRSACipher(P_RSA_CIPHER pc)
 {
 	pc->next = NULL;
 	pc->bilu = 0;
 	if (! pbkInitBint(&pc->M, 0))
-		return FALSE;
-	return TRUE;
+		return false;
+	return true;
 }
 
 /* Function name: pbrFreeRSAKey
@@ -192,11 +192,11 @@ void pbrDeleteRSACipher(P_RSA_CIPHER pc)
  *          f Stores the result.
  *          p Big prime number p.
  *          q Big prime number q.
- * Return value:  TRUE  Compute succeeded.
- *                FALSE Compute failed.
+ * Return value:  true  Compute succeeded.
+ *                false Compute failed.
  * Tip:           Phi/Fi(N) = (p - 1) * (q - 1)
  */
-static _boolean _pbrFi(P_BINT f, P_BINT p, P_BINT q)
+static bool _pbrFi(P_BINT f, P_BINT p, P_BINT q)
 {
 	_ub ss = 1;
 	BINT S = { 1, 1, 0, &ss };
@@ -218,12 +218,12 @@ static _boolean _pbrFi(P_BINT f, P_BINT p, P_BINT q)
 	pbkDeleteBint(pr);
 	pbkDeleteBint(qr);
 	
-	return TRUE;
+	return true;
 
 Lbl_Error:
 	pbkDeleteBint(pr);
 	pbkDeleteBint(qr);
-	return FALSE;
+	return false;
 }
 
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
@@ -257,7 +257,7 @@ static _ub _pbrE(P_BINT f, int seed)
 		max = RAND_MAX;
 	
 	pbkInitBint(&E, re = 1 + rand() / ((RAND_MAX + 1u) / max));
-	pbkReallocBint(&E, GETABS(GETFLAG(&E)), FALSE);
+	pbkReallocBint(&E, GETABS(GETFLAG(&E)), false);
 	pbkInitBint(&F, 0);
 	pbkMoveBint(&F, f);
 	
@@ -299,10 +299,10 @@ Lbl_Error:
  *         ot Big number t is usually useless.
  *          a GCD(a, b);
  *          b GCD(a, b);
- * Return value:  TRUE  Compute succeeded.
- *                FALSE Compute failed.
+ * Return value:  true  Compute succeeded.
+ *                false Compute failed.
  */
-static _boolean _pbrXGCD(P_BINT or, P_BINT os, P_BINT ot, P_BINT a, P_BINT b)
+static bool _pbrXGCD(P_BINT or, P_BINT os, P_BINT ot, P_BINT a, P_BINT b)
 {
 	BINT R  = { 0 };
 	BINT S  = { 0 };
@@ -313,19 +313,19 @@ static _boolean _pbrXGCD(P_BINT or, P_BINT os, P_BINT ot, P_BINT a, P_BINT b)
 	BINT W  = { 0 };
 
 	pbkInitBint(&R, 0);
-	pbkReallocBint(&R, GETABS(GETFLAG(b)), FALSE);
+	pbkReallocBint(&R, GETABS(GETFLAG(b)), false);
 	pbkInitBint(&S, 0);
-	pbkReallocBint(&S, GETABS(GETFLAG(b)), FALSE);
+	pbkReallocBint(&S, GETABS(GETFLAG(b)), false);
 	pbkInitBint(&T, 1);
-	pbkReallocBint(&T, GETABS(GETFLAG(b)), FALSE);
+	pbkReallocBint(&T, GETABS(GETFLAG(b)), false);
 	pbkInitBint(&Q, 0);
-	pbkReallocBint(&Q, GETABS(GETFLAG(b)), FALSE);
+	pbkReallocBint(&Q, GETABS(GETFLAG(b)), false);
 	pbkInitBint(&U, 0);
-	pbkReallocBint(&U, GETABS(GETFLAG(b)), FALSE);
+	pbkReallocBint(&U, GETABS(GETFLAG(b)), false);
 	pbkInitBint(&V, 0);
-	pbkReallocBint(&V, GETABS(GETFLAG(b)), FALSE);
+	pbkReallocBint(&V, GETABS(GETFLAG(b)), false);
 	pbkInitBint(&W, 0);
-	pbkReallocBint(&W, GETABS(GETFLAG(b)), FALSE);
+	pbkReallocBint(&W, GETABS(GETFLAG(b)), false);
 	
 	pbkMoveBint(&R, b);
 	pbkMoveBint(or, a);
@@ -392,7 +392,7 @@ static _boolean _pbrXGCD(P_BINT or, P_BINT os, P_BINT ot, P_BINT a, P_BINT b)
 	pbkFreeBint(&U);
 	pbkFreeBint(&V);
 	pbkFreeBint(&W);
-	return TRUE;
+	return true;
 	
 Lbl_Error:
 	pbkFreeBint(&R);
@@ -402,7 +402,7 @@ Lbl_Error:
 	pbkFreeBint(&U);
 	pbkFreeBint(&V);
 	pbkFreeBint(&W);
-	return FALSE;
+	return false;
 }
 
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
@@ -412,19 +412,19 @@ Lbl_Error:
  *          d Stores the result.
  *          e Stores exponent value.
  *          b Stores Phi(N).
- * Return value:  TRUE  Compute succeeded.
- *                FALSE Compute failed.
+ * Return value:  true  Compute succeeded.
+ *                false Compute failed.
  * Tip:           (e * d) mod Phi(N) == 1;
  */
-static _boolean _pbrD(P_BINT d, P_BINT e, P_BINT f)
+static bool _pbrD(P_BINT d, P_BINT e, P_BINT f)
 {
 	BINT G = { 0 };
 	BINT T = { 0 };
 	
 	pbkInitBint(&G, 0);
-	pbkReallocBint(&G, GETABS(GETFLAG(f)), FALSE);
+	pbkReallocBint(&G, GETABS(GETFLAG(f)), false);
 	pbkInitBint(&T, 0);
-	pbkReallocBint(&T, GETABS(GETFLAG(f)), FALSE);
+	pbkReallocBint(&T, GETABS(GETFLAG(f)), false);
 	
 	if (! _pbrXGCD(&G, d, &T, e, f))
 		goto Lbl_Error;
@@ -443,12 +443,12 @@ static _boolean _pbrD(P_BINT d, P_BINT e, P_BINT f)
 	
 	pbkFreeBint(&G);
 	pbkFreeBint(&T);
-	return TRUE;
+	return true;
 	
 Lbl_Error:
 	pbkFreeBint(&G);
 	pbkFreeBint(&T);
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbrGetRSAKey
@@ -459,13 +459,13 @@ Lbl_Error:
  *          p Pointer to the big prime integer p.
  *          q Pointer to the big prime integer q.
  *       seed RNG seed for calculating exponent value.
- * Return value:  TRUE  Fetch succeeded.
- *                FALSE Fetch failed.
+ * Return value:  true  Fetch succeeded.
+ *                false Fetch failed.
  * Tip:           Users shall use function pbrCreateRSAKey to allocate keys.
  *                Public key:  (e, N);
  *                Private key: (d, N);
  */
-_boolean pbrGetRSAKey(P_RSA_KEY pubk, P_RSA_KEY pvtk, P_BINT p, P_BINT q, int seed)
+bool pbrGetRSAKey(P_RSA_KEY pubk, P_RSA_KEY pvtk, P_BINT p, P_BINT q, int seed)
 {
 	BINT N = { 0 };
 	BINT F = { 0 };
@@ -480,9 +480,9 @@ _boolean pbrGetRSAKey(P_RSA_KEY pubk, P_RSA_KEY pvtk, P_BINT p, P_BINT q, int se
 	if (! pbkMultiplyBint(&N, p, q))
 		goto Lbl_Error;
 
-	pbkReallocBint(&E, GETABS(GETFLAG(&N)), FALSE);
-	pbkReallocBint(&F, GETABS(GETFLAG(&N)), FALSE);
-	pbkReallocBint(&D, GETABS(GETFLAG(&N)), FALSE);
+	pbkReallocBint(&E, GETABS(GETFLAG(&N)), false);
+	pbkReallocBint(&F, GETABS(GETFLAG(&N)), false);
+	pbkReallocBint(&D, GETABS(GETFLAG(&N)), false);
 	
 	if (! _pbrFi(&F, p, q))
 		goto Lbl_Error;
@@ -506,10 +506,10 @@ _boolean pbrGetRSAKey(P_RSA_KEY pubk, P_RSA_KEY pvtk, P_BINT p, P_BINT q, int se
 	pbkFreeBint(&D);
 	pbkFreeBint(&E);
 
-	pbkReallocBint(&pubk->D, GETABS(GETFLAG(&pubk->D)), FALSE);
-	pbkReallocBint(&pubk->N, GETABS(GETFLAG(&pubk->N)), FALSE);
+	pbkReallocBint(&pubk->D, GETABS(GETFLAG(&pubk->D)), false);
+	pbkReallocBint(&pubk->N, GETABS(GETFLAG(&pubk->N)), false);
 	
-	return TRUE;
+	return true;
 
 Lbl_Error:
 	pbkFreeBint(&N);
@@ -517,7 +517,7 @@ Lbl_Error:
 	pbkFreeBint(&D);
 	pbkFreeBint(&E);
 	
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbrDestroyRSACipherChain
@@ -551,7 +551,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 {
 	register size_t i, j, k, l;
 	register unsigned char c = 0;
-	register _boolean bcl = FALSE; /* Boolean c last. */
+	register bool bcl = false; /* Boolean c last. */
 	register unsigned char * ps = s, iv = pubk->E;
 	_stdiv_t z = _stdiv(len, sizeof(_ub));
 	
@@ -560,8 +560,8 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 	P_RSA_CIPHER phd = prc, ppp = prc, rrp = prr;
 	
 	/* Shrink capacity. */
-	pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), FALSE);
-	pbkReallocBint(&prr->M, GETABS(GETFLAG(&pubk->N)), FALSE);
+	pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), false);
+	pbkReallocBint(&prr->M, GETABS(GETFLAG(&pubk->N)), false);
 	
 	for (k = l = i = 0; i < z.quot; ++i)
 	{
@@ -574,7 +574,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 				prc->M.data[k] = 0;
 				prc->M.data[k] |= c;
 				SETFLAG(&prc->M, (_ib)(k + 1));
-				bcl = FALSE;
+				bcl = false;
 			}
 
 			if (ps - s < (ptrdiff_t)len)
@@ -588,8 +588,8 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 					prc->M.data[k] ^= (c << (CHAR_BIT * l));
 					prc->next = pbrCreateRSACipher();
 					prc = prc->next;
-					pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), FALSE);
-					bcl = TRUE;
+					pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), false);
+					bcl = true;
 					k = 0;
 					continue;
 				}
@@ -597,7 +597,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 		}
 		prc->next = pbrCreateRSACipher();
 		prc = prc->next;
-		pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), FALSE);
+		pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), false);
 	}
 	
 	for (j = 0; j < z.rem || bcl; ++j, ++l)
@@ -609,7 +609,7 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 			prc->M.data[k] = 0;
 			prc->M.data[k] |= c;
 			SETFLAG(&prc->M, (_ib)(k + 1));
-			bcl = FALSE;
+			bcl = false;
 		}
 
 		if (ps - s < (ptrdiff_t)len)
@@ -623,8 +623,8 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 				prc->M.data[k] ^= (c << (CHAR_BIT * l));
 				prc->next = pbrCreateRSACipher();
 				prc = prc->next;
-				pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), FALSE);
-				bcl = TRUE;
+				pbkReallocBint(&prc->M, GETABS(GETFLAG(&pubk->N)), false);
+				bcl = true;
 				k = 0;
 				continue;
 			}
@@ -635,13 +635,13 @@ P_RSA_CIPHER pbrEncrypt(P_RSA_KEY pubk, unsigned char * s, size_t len)
 	{
 		prr->bilu = ppp->bilu;
 		pbmBintExponentialModule(&prr->M, &ppp->M, pubk->E, &pubk->N);
-		pbkReallocBint(&prr->M, GETABS(GETFLAG(&pubk->N)), FALSE);
+		pbkReallocBint(&prr->M, GETABS(GETFLAG(&pubk->N)), false);
 
 		if (NULL != ppp->next)
 		{
 			prr->next = pbrCreateRSACipher();
 			prr = prr->next;
-			pbkReallocBint(&prr->M, GETABS(GETFLAG(&pubk->N)), FALSE);
+			pbkReallocBint(&prr->M, GETABS(GETFLAG(&pubk->N)), false);
 		}
 		ppp = ppp->next;
 	}
@@ -675,7 +675,7 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 	
 	pbkInitBint(&M, 0);
 	pbkInitBint(&D, 0);
-	pbkReallocBint(&M, GETABS(GETFLAG(&pvtk->N)), FALSE);
+	pbkReallocBint(&M, GETABS(GETFLAG(&pvtk->N)), false);
 
 	while (NULL != ppp)
 	{
@@ -693,7 +693,7 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 		{
 			pbkMoveBint(&D, &pvtk->D);
 			pbmBintExponentialModuleBint(&M, &ppp->M, &D, &pvtk->N);
-			pbkReallocBint(&M, GETABS(GETFLAG(&pvtk->N)), FALSE);
+			pbkReallocBint(&M, GETABS(GETFLAG(&pvtk->N)), false);
 
 			for (i = 0; i < GETABS(GETFLAG(&M)); ++i)
 			{

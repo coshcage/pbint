@@ -35,7 +35,7 @@ unsigned short gPrimeTable1K[PTSIZ] =
 
 /* File level function declaration. */
 _ub      _pbmRand1Block    (void);
-_boolean _pbkIsPrimePrimary(P_BINT n);
+bool _pbkIsPrimePrimary(P_BINT n);
 
 /* Function name: pbmBintPower
  * Description:   Calculates the power of a big integer.
@@ -43,16 +43,16 @@ _boolean _pbkIsPrimePrimary(P_BINT n);
  *          r Pointer to a big integer that is the result.
  *          a Pointer to a big integer.
  *          n Power of n.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           r := a ^ n; (r := power(a, n);)
  *                This function uses quick power algorithm.
  */
-_boolean pbmBintPower(P_BINT r, P_BINT a, _ub n)
+bool pbmBintPower(P_BINT r, P_BINT a, _ub n)
 {
 	BINT A = { 0 }, T = { 0 }, R = { 0 };
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(r))
-		return FALSE;
+		return false;
 	else
 	{
 		SETFLAG(r, 1);
@@ -85,14 +85,14 @@ _boolean pbmBintPower(P_BINT r, P_BINT a, _ub n)
 		pbkFreeBint(&T);
 		pbkFreeBint(&R);
 
-		return TRUE;
+		return true;
 	}
 Lbl_Failed:
 	pbkFreeBint(&A);
 	pbkFreeBint(&T);
 	pbkFreeBint(&R);
 
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbmBintPowerBint
@@ -101,17 +101,17 @@ Lbl_Failed:
  *          r Pointer to a big integer that is the result.
  *          a Pointer to a big integer.
  *          n Power of n.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       Big integer parameter n will change to value zero after invoking.
  * Tip:           r := a ^ n; (r := power(a, n);)
  *                This function uses quick power algorithm.
  */
-_boolean pbmBintPowerBint(P_BINT r, P_BINT a, P_BINT n)
+bool pbmBintPowerBint(P_BINT r, P_BINT a, P_BINT n)
 {
 	BINT A = { 0 }, T = { 0 }, R = { 0 };
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(r))
-		return FALSE;
+		return false;
 	else
 	{
 		SETFLAG(r, 1);
@@ -145,14 +145,14 @@ _boolean pbmBintPowerBint(P_BINT r, P_BINT a, P_BINT n)
 		pbkFreeBint(&T);
 		pbkFreeBint(&R);
 
-		return TRUE;
+		return true;
 	}
 Lbl_Failed:
 	pbkFreeBint(&A);
 	pbkFreeBint(&T);
 	pbkFreeBint(&R);
 
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbmBintExponentialModule
@@ -162,16 +162,16 @@ Lbl_Failed:
  *          a Pointer to a big integer.
  *          n Power of n.
  *          m Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           r := a ^ n mod m.
  *                This function uses quick power algorithm.
  */
-_boolean pbmBintExponentialModule(P_BINT r, P_BINT a, _ub n, P_BINT m)
+bool pbmBintExponentialModule(P_BINT r, P_BINT a, _ub n, P_BINT m)
 {
 	BINT R = { 0 }, T = { 0 };
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(m))
-		return FALSE;
+		return false;
 	else
 	{
 		pbkInitBint(&R, 0);
@@ -206,13 +206,13 @@ _boolean pbmBintExponentialModule(P_BINT r, P_BINT a, _ub n, P_BINT m)
 		pbkFreeBint(&R);
 		pbkFreeBint(&T);
 
-		return TRUE;
+		return true;
 	}
 Lbl_Failed:
 	pbkFreeBint(&R);
 	pbkFreeBint(&T);
 
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbmBintExponentialModuleBint
@@ -222,18 +222,18 @@ Lbl_Failed:
  *          a Pointer to a big integer.
  *          n Power of n.
  *          m Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           r := a ^ n mod m.
  *                This function uses quick power algorithm.
  * Caution:       n will change after invoking,
  */
-_boolean pbmBintExponentialModuleBint(P_BINT r, P_BINT a, P_BINT n, P_BINT m)
+bool pbmBintExponentialModuleBint(P_BINT r, P_BINT a, P_BINT n, P_BINT m)
 {
 	long i = 1;
 	BINT R = { 0 }, T = { 0 };
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(m))
-		return FALSE;
+		return false;
 	else
 	{
 		pbkInitBint(&R, 0);
@@ -268,13 +268,13 @@ _boolean pbmBintExponentialModuleBint(P_BINT r, P_BINT a, P_BINT n, P_BINT m)
 		pbkFreeBint(&R);
 		pbkFreeBint(&T);
 
-		return TRUE;
+		return true;
 	}
 Lbl_Failed:
 	pbkFreeBint(&R);
 	pbkFreeBint(&T);
 
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbmUbFactorial
@@ -282,11 +282,11 @@ Lbl_Failed:
  * Parameters:
  *          r Pointer to a big integer to store the result.
  *          n fact(n).
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Tip:           Big value of n is slow to solve.
  */
-_boolean pbmUbFactorial(P_BINT r, _ub n)
+bool pbmUbFactorial(P_BINT r, _ub n)
 {
 	BINT R = { 0 }, N = { 0 };
 
@@ -304,21 +304,21 @@ _boolean pbmUbFactorial(P_BINT r, _ub n)
 		{
 			pbkFreeBint(&R);
 			pbkFreeBint(&N);
-			return FALSE;
+			return false;
 		}
 		N.data[0] = n;
 		if (!pbkMultiplyBint(r, &N, &R))
 		{
 			pbkFreeBint(&R);
 			pbkFreeBint(&N);
-			return FALSE;
+			return false;
 		}
 		--n;
 	}
 
 	pbkFreeBint(&R);
 	pbkFreeBint(&N);
-	return TRUE;
+	return true;
 }
 
 /* Function name: pbmBintSquareRoot
@@ -326,14 +326,14 @@ _boolean pbmUbFactorial(P_BINT r, _ub n)
  * Parameters:
  *          r Pointer to a big integer to store result.
  *          n sqrt(n).
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbmBintSquareRoot(P_BINT r, P_BINT n)
+bool pbmBintSquareRoot(P_BINT r, P_BINT n)
 {
 	BINT * xk = r, XK1 = { 0 }, T = { 0 }, X = { 0 };
 	if (pbkIsNotANumber(n))
-		return FALSE;
+		return false;
 	else
 	{
 		pbkInitBint(&T, 0);
@@ -355,13 +355,13 @@ _boolean pbmBintSquareRoot(P_BINT r, P_BINT n)
 		pbkFreeBint(&XK1);
 		pbkFreeBint(&T);
 		pbkFreeBint(&X);
-		return TRUE;
+		return true;
 	}
 Lbl_Failure:
 	pbkFreeBint(&XK1);
 	pbkFreeBint(&T);
 	pbkFreeBint(&X);
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbmBintGreatestCommonDivisor
@@ -370,15 +370,15 @@ Lbl_Failure:
  *          r Pointer to a big integer to store result.
  *          a Pointer to a big integer.
  *          b Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  * Caution:       After invoking, the value of a and b are both CHANGED!
  * Tip:           This function uses Euclidian algorithm.
  */
-_boolean pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a, P_BINT b)
+bool pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a, P_BINT b)
 {
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(b) || pbkIsNotANumber(r))
-		return FALSE;
+		return false;
 	else
 	{
 		while (!pbkIsBintEqualToZero(b))
@@ -395,10 +395,10 @@ _boolean pbmBintGreatestCommonDivisor(P_BINT r, P_BINT a, P_BINT b)
 		if (!pbkMoveBint(r, a))
 			goto Lbl_Failed;
 
-		return TRUE;
+		return true;
 	}
 Lbl_Failed:
-	return FALSE;
+	return false;
 }
 
 /* Function name: pbmBintLeastCommonMultiple
@@ -407,15 +407,15 @@ Lbl_Failed:
  *          r Pointer to a big integer to store result.
  *          a Pointer to a big integer.
  *          b Pointer to a big integer.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbmBintLeastCommonMultiple(P_BINT r, P_BINT a, P_BINT b)
+bool pbmBintLeastCommonMultiple(P_BINT r, P_BINT a, P_BINT b)
 {
 	BINT T = {0}, U = {0};
 	
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(b) || pbkIsNotANumber(r))
-		return FALSE;
+		return false;
 	else
 	{
 		pbkInitBint(&T, 0);
@@ -437,12 +437,12 @@ _boolean pbmBintLeastCommonMultiple(P_BINT r, P_BINT a, P_BINT b)
 		
 		pbkFreeBint(&T);
 		pbkFreeBint(&U);
-		return TRUE;
+		return true;
 	}
 Lbl_Failed:
 	pbkFreeBint(&T);
 	pbkFreeBint(&U);
-	return FALSE;
+	return false;
 }
 
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
@@ -471,20 +471,20 @@ _ub _pbmRand1Block(void)
  * Parameters:
  *          r Pointer to a big integer to store result.
  *     blocks Maximum number of blocks to be generate.
- *     blarge FALSE Generate a smaller integer than blocks.
- *            TRUE  Generate a larger integer than blocks - 1.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ *     blarge false Generate a smaller integer than blocks.
+ *            true  Generate a larger integer than blocks - 1.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean pbmRandomGenerator(P_BINT r, _ub blocks, _boolean blarge)
+bool pbmRandomGenerator(P_BINT r, _ub blocks, bool blarge)
 {
 	size_t i = RAND_1_TIME(1, blocks), j;
-	if (!pbkReallocBint(r, (_ub)i, FALSE))
-		return FALSE;
+	if (!pbkReallocBint(r, (_ub)i, false))
+		return false;
 	for (j = 0; j < blarge ? i : i - 1; ++j)
 		r->data[j] = _pbmRand1Block();
 	pbkShrinkZeroFlag(r);
-	return TRUE;
+	return true;
 }
 
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
@@ -492,13 +492,13 @@ _boolean pbmRandomGenerator(P_BINT r, _ub blocks, _boolean blarge)
  * Description:   Test prime number.
  * Parameter:
  *         n Pointer to a big integer to be tested.
- * Return value:  TRUE:  Succeeded.
- *                FALSE: Failed.
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
  */
-_boolean _pbkIsPrimePrimary(P_BINT n)
+bool _pbkIsPrimePrimary(P_BINT n)
 {
 	size_t i;
-	_boolean r = TRUE;
+	bool r = true;
 
 	BINT P = { 0 }, R = { 0 };
 
@@ -510,7 +510,7 @@ _boolean _pbkIsPrimePrimary(P_BINT n)
 		pbkDivideBint(NULL, &R, n, &P);
 		if (pbkIsBintEqualToZero(&R))
 		{
-			r = FALSE;
+			r = false;
 			goto Lbl_Finish;
 		}
 	}
@@ -525,26 +525,26 @@ Lbl_Finish:
  * Parameters:
  *          r Pointer to a big integer to be tested.
  *          k K times of evaluation. K should be greater than 8.
- * Return value:  TRUE:  n is a pseudo prime.
- *                FALSE: n is NOT a prime.
+ * Return value:  true:  n is a pseudo prime.
+ *                false: n is NOT a prime.
  */
-_boolean pbmMillerRabinTest(P_BINT n, _ub k)
+bool pbmMillerRabinTest(P_BINT n, _ub k)
 {
 	BINT A = { 0 }, X = { 0 }, N_1 = { 0 }, U = { 0 }, V = { 0 }, T = { 0 };
-	_boolean r = TRUE;
+	bool r = true;
 	_udb t = 0, s;
 	size_t i;
 	if ((pbkBintToIb(n) < 3) || 0 == (pbkBintToIb(n) & 1))
 	{
 		if (2 == pbkBintToIb(n) && 1 == GETFLAG(n))
-			return TRUE;
+			return true;
 		else
-			return FALSE;
+			return false;
 	}
 	else
 	{
-		if (FALSE == _pbkIsPrimePrimary(n))
-			return FALSE;
+		if (false == _pbkIsPrimePrimary(n))
+			return false;
 
 		pbkInitBint(&A, 0);
 		pbkInitBint(&X, 1);
@@ -554,13 +554,13 @@ _boolean pbmMillerRabinTest(P_BINT n, _ub k)
 
 		if (!pbkSubtractBint(&N_1, n, &X))
 		{
-			r = FALSE;
+			r = false;
 			goto Lbl_Finish;
 		}
 
 		if (!pbkMoveBint(&U, &N_1))
 		{
-			r = FALSE;
+			r = false;
 			goto Lbl_Finish;
 		}
 
@@ -574,30 +574,30 @@ _boolean pbmMillerRabinTest(P_BINT n, _ub k)
 		{
 			if (GETFLAG(n) > 1)
 			{
-				if (!pbmRandomGenerator(&A, GETABS(GETFLAG(n)) - 1, TRUE))
+				if (!pbmRandomGenerator(&A, GETABS(GETFLAG(n)) - 1, true))
 				{
-					r = FALSE;
+					r = false;
 					goto Lbl_Finish;
 				}
 			}
 			else
 			{
-				if (!pbmRandomGenerator(&A, 1, FALSE))
+				if (!pbmRandomGenerator(&A, 1, false))
 				{
-					r = FALSE;
+					r = false;
 					goto Lbl_Finish;
 				}
 			}
 
 			if (!pbkMoveBint(&T, &U))
 			{
-				r = FALSE;
+				r = false;
 				goto Lbl_Finish;
 			}
 			
 			if (!pbmBintExponentialModuleBint(&V, &A, &T, n))
 			{
-				r = FALSE;
+				r = false;
 				goto Lbl_Finish;
 			}
 
@@ -611,23 +611,23 @@ _boolean pbmMillerRabinTest(P_BINT n, _ub k)
 
 				if (!pbmBintExponentialModule(&X, &V, 2, n))
 				{
-					r = FALSE;
+					r = false;
 					goto Lbl_Finish;
 				}
 
 				if (!pbkMoveBint(&V, &X))
 				{
-					r = FALSE;
+					r = false;
 					goto Lbl_Finish;
 				}
 			}
 			if (s == t)
 			{
-				r = FALSE;
+				r = false;
 				goto Lbl_Finish;
 			}
 		}
-		r = TRUE;
+		r = true;
 	}
 Lbl_Finish:
 	pbkFreeBint(&A);

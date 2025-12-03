@@ -20,7 +20,7 @@
 #endif
 
 /* File scope function declaration. */
-static void _pbfFFTTransform(double * real, double * imag, size_t n, _boolean binv);
+static void _pbfFFTTransform(double * real, double * imag, size_t n, bool binv);
 
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
  * Function name: _pbfFFTTransform
@@ -29,10 +29,10 @@ static void _pbfFFTTransform(double * real, double * imag, size_t n, _boolean bi
  *       real Pointer to real part array.
  *       imag Pointer to image part array.
  *          n The length of complex array.
- *       binv TRUE: Inverse transform. FALSE: Forward transform.
+ *       binv true: Inverse transform. false: Forward transform.
  * Return value:  N/A.
  */
-static void _pbfFFTTransform(double * real, double * imag, size_t n, _boolean binv)
+static void _pbfFFTTransform(double * real, double * imag, size_t n, bool binv)
 {
 	register size_t i, j, len;
 	/* Bit reversal permutation. */
@@ -102,15 +102,15 @@ static void _pbfFFTTransform(double * real, double * imag, size_t n, _boolean bi
  *          c Pointer to a big integer.
  *          a Pointer to a big integer.
  *          b Pointer to a big integer.
- * Return value: TRUE:  Succeeded.
- *               FALSE: Failed.
+ * Return value: true:  Succeeded.
+ *               false: Failed.
  * Caution:      The address of c shall not equal to a or b.
  * Tip:          c := a * b;
  */
-_boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a, P_BINT b)
+bool pbkMultiplyBintFFT(P_BINT c, P_BINT a, P_BINT b)
 {
 	if (pbkIsNotANumber(a) || pbkIsNotANumber(b))
-		return FALSE;
+		return false;
 	else
 	{
 		register _udb carry;
@@ -135,7 +135,7 @@ _boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a, P_BINT b)
 		A = (double *)calloc(4 * n, sizeof(double));
 		
 		if (!A)
-			return FALSE;
+			return false;
 		
 		B = A + n;
 		Ai = B + n;
@@ -148,8 +148,8 @@ _boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a, P_BINT b)
 			B[i] = (double)b->data[i];
 
 		/* Forward FFT. */
-		_pbfFFTTransform(A, Ai, n, FALSE);
-		_pbfFFTTransform(B, Bi, n, FALSE);
+		_pbfFFTTransform(A, Ai, n, false);
+		_pbfFFTTransform(B, Bi, n, false);
 
 		/* Pointwise multiplication. */
 		for (i = 0; i < n; ++i)
@@ -161,11 +161,11 @@ _boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a, P_BINT b)
 		}
 
 		/* Inverse FFT. */
-		_pbfFFTTransform(A, Ai, n, TRUE);
+		_pbfFFTTransform(A, Ai, n, true);
 
 		/* Prepare result. */
-		if (!pbkReallocBint(c, n, TRUE))
-			return FALSE;
+		if (!pbkReallocBint(c, n, true))
+			return false;
 
 		carry = 0;
 		for (i = 0; i < n; ++i)
@@ -181,7 +181,7 @@ _boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a, P_BINT b)
 		{
 			if (clen >= GETSIZE(c))
 			{
-				if (!pbkReallocBint(c, clen + 1, TRUE))
+				if (!pbkReallocBint(c, clen + 1, true))
 					break;
 			}
 			c->data[clen++] = (_ub)(carry & UBLOCK_FULL);
@@ -195,6 +195,6 @@ _boolean pbkMultiplyBintFFT(P_BINT c, P_BINT a, P_BINT b)
 
 		free(A);
 	}
-	return TRUE;
+	return true;
 }
 
