@@ -2,7 +2,7 @@
  * Name:        pbm.c
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323D0225262300L00764
+ * File ID:     0520240323D0225262300L00765
  * License:     GPLv3.
  */
 
@@ -401,6 +401,7 @@ bool pbmBintKthRoot(P_BINT r, P_BINT m, _ub k)
 			pbkDivideBint(&Y, NULL, m, &X);
 			
 			Z.data[0] = k - 1;
+			SETFLAG(&Z, 1);
 			
 			pbkMultiplyBint(&X, r, &Z);
 			
