@@ -1,3 +1,9 @@
+/*
+ * Name:        05-24-24_11-40.c
+ * Description: Test for 2000 factorial on Windows.
+ * Author:      cosh.cage#hotmail.com
+ * License:     GPLv3.
+ */
 #include <stdio.h>
 #include <Windows.h>
 #include "pbm.h"

@@ -1,3 +1,9 @@
+/*
+ * Name:        05-24-25_11-41.c
+ * Description: Test for 2000 factorial.
+ * Author:      cosh.cage#hotmail.com
+ * License:     GPLv3.
+ */
 #include <stdio.h>
 #include "pbm.h"
 

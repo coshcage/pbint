@@ -20,10 +20,10 @@ typedef struct _st_stdiv_t
 
 /* File level function declarations. */
 static _stdiv_t _stdiv            (size_t numerator, size_t denominator);
-static bool _pbrFi            (P_BINT f, P_BINT p, P_BINT q);
+static bool     _pbrFi            (P_BINT f, P_BINT p, P_BINT q);
 static _ub      _pbrE             (P_BINT f, int seed);
-static bool _pbrXGCD          (P_BINT or, P_BINT os, P_BINT ot, P_BINT a, P_BINT m);
-static bool _pbrD             (P_BINT d, P_BINT e, P_BINT f);
+static bool     _pbrXGCD          (P_BINT or, P_BINT os, P_BINT ot, P_BINT a, P_BINT m);
+static bool     _pbrD             (P_BINT d, P_BINT e, P_BINT f);
 static void     _pbkSecureFreeBint(P_BINT pbi);
 
 /* Attention:     This Is An Internal Function. No Interface for Library Users.
@@ -714,3 +714,4 @@ unsigned char * pbrDecrypt(size_t * plen, P_RSA_CIPHER  prc, P_RSA_KEY pvtk)
 	
 	return str;
 }
+

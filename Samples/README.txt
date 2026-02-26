@@ -5,4 +5,4 @@ pbi4rsa.h               Portable big integer library for RSA interface.
 pbi4rsa.c               Portable big integer library for RSA module.
 pbi4rsax.h              Portable big integer library for RSA interface.
 pbi4rsax.c              Portable big integer library for RSA eXternal memory support.
-rsa_test.txt            RSA testing suit.
+rsa_test.c              RSA testing suit.
