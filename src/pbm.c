@@ -2,7 +2,7 @@
  * Name:        pbm.c
  * Description: Portable big integer library mathematics module.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323D0917251700L00633
+ * File ID:     0520240323D0225262300L00764
  * License:     GPLv3.
  */
 
@@ -361,6 +361,129 @@ Lbl_Failure:
 	pbkFreeBint(&XK1);
 	pbkFreeBint(&T);
 	pbkFreeBint(&X);
+	return false;
+}
+
+/* Function name: pbmBintKthRoot
+ * Description:   Gets the kth root of the big integer m.
+ * Parameters:
+ *          r Pointer to a big integer to store result.
+ *          m Pointer to a big integer.
+ *          k m^(1/k).
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
+ * Caution:       k must >= 2.
+ */
+bool pbmBintKthRoot(P_BINT r, P_BINT m, _ub k)
+{
+	BINT U = { 0 }, X = { 0 }, Y = { 0 }, Z = { 0 };
+	
+	if (k < 2)
+		return false;
+	
+	if (pbkIsNotANumber(m) || pbkIsNotANumber(r))
+		return false;
+	else
+	{
+		pbkInitBint(&X, 0);
+		pbkInitBint(&Y, 0);
+		pbkInitBint(&Z, 0);
+		
+		pbkInitBint(&U, 0);
+		pbkMoveBint(&U, m);
+		
+		do
+		{	
+			pbkMoveBint(r, &U);
+			
+			pbmBintPower(&X, r, k - 1);
+			
+			pbkDivideBint(&Y, NULL, m, &X);
+			
+			Z.data[0] = k - 1;
+			
+			pbkMultiplyBint(&X, r, &Z);
+			
+			pbkAddBint(&Z, &X, &Y);
+			
+			pbkIbToBint(&X, (_ib)k);
+			
+			pbkDivideBint(&U, NULL, &Z, &X);
+		}
+		while (pbkCompareBint(&U, r) < 0);
+		
+		pbkFreeBint(&U);
+		pbkFreeBint(&X);
+		pbkFreeBint(&Y);
+		pbkFreeBint(&Z);
+		
+		return true;
+	}
+	return false;
+}
+
+/* Function name: pbmBintKthRootBint
+ * Description:   Gets the big integer kth root of the big integer m.
+ * Parameters:
+ *          r Pointer to a big integer to store result.
+ *          m Pointer to a big integer.
+ *          k m^(1/k).
+ * Return value:  true:  Succeeded.
+ *                false: Failed.
+ * Caution:       k must >= 2.
+ */
+bool pbmBintKthRootBint(P_BINT r, P_BINT m, P_BINT k)
+{
+	BINT U = { 0 }, X = { 0 }, Y = { 0 }, Z = { 0 }, T = { 0 }, I = { 0 };
+	if (pbkIsNotANumber(r) || pbkIsNotANumber(m) || pbkIsNotANumber(k))
+		return false;
+	else
+	{
+		pbkInitBint(&X, 2);
+		
+		if (pbkCompareBint(k, &X) < 0)
+		{
+			pbkFreeBint(&X);
+			return false;
+		}
+		
+		pbkInitBint(&Y, 0);
+		pbkInitBint(&Z, 0);
+		pbkInitBint(&T, 0);
+		pbkInitBint(&I, 1);
+		
+		pbkInitBint(&U, 0);
+		pbkMoveBint(&U, m);
+		
+		do
+		{	
+			pbkMoveBint(r, &U);
+			
+			pbkSubtractBint(&T, k, &I);
+			
+			pbmBintPowerBint(&X, r, &T);
+			
+			pbkDivideBint(&Y, NULL, m, &X);
+			
+			pbkSubtractBint(&T, k, &I);
+			
+			pbkMultiplyBint(&X, r, &T);
+			
+			pbkAddBint(&Z, &X, &Y);
+			
+			pbkDivideBint(&U, NULL, &Z, k);
+		}
+		while (pbkCompareBint(&U, r) < 0);
+		
+		pbkFreeBint(&U);
+		pbkFreeBint(&X);
+		pbkFreeBint(&Y);
+		pbkFreeBint(&Z);
+		pbkFreeBint(&T);
+		pbkFreeBint(&I);
+		
+		return true;
+	}
 	return false;
 }
 
