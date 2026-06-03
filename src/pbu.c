@@ -13,7 +13,7 @@
  * Description:   Decimal zero terminated string to big integer.
  * Parameters:
  *        pbi Pointer to a big integer.
- *        str Pointer to zero terminated string..
+ *        str Pointer to zero terminated string.
  * Return value:  true:  Succeeded.
  *                false: Failed.
  */
