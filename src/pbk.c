@@ -1552,7 +1552,7 @@ Lbl_Failed:
 	return false;
 }
 
-/* Function name: pbkBintToDecimalBnum
+/* Function name: pbkDecimalBnumToBint
  * Description:   Convert a big number to base 2 big integer.
  * Parameters:
  *          x Pointer to a big integer.
