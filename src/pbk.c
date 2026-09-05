@@ -2,7 +2,7 @@
  * Name:        pbk.c
  * Description: Portable big integer library kernel.
  * Author:      cosh.cage#hotmail.com
- * File ID:     0520240323B1101251046L01605
+ * File ID:     0520240323B0905262219L01605
  * License:     GPLv3.
  */
 
@@ -1223,7 +1223,7 @@ void pbkFreeBnum(P_BNUM pbn)
  */
 P_BNUM pbkCreateBnum(_ub base)
 {
-	register P_BNUM pbn = malloc(sizeof(BINT));
+	register P_BNUM pbn = malloc(sizeof(BNUM));
 	if (NULL != pbn)
 	{
 		memset(pbn, 0, sizeof(BNUM));
